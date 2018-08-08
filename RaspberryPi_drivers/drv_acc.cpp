@@ -1,11 +1,14 @@
 #include <iostream>
 #include <errno.h>
 #include <wiringPiI2C.h>
-
+#include <time.h>
+#include <unistd.h>
 
 #define uint8_t	char
 
 #define ACCELEROMETER_I2C_ADDR	0x6B
+
+#define SELF_TEST_LEN	10  /* Time in seconds. */	
 
 enum
 {
@@ -90,4 +93,20 @@ bool is_acc_on()
 	
 	return ret_val;
 }	
+
+bool imu_self_test()
+{
+	clock_t start = clock();
+	clock_t stop = clock();
+	while (stop - start <= SELF_TEST_LEN * CLOCKS_PER_SEC)
+	{
+		std::cout << "\nx";
+		read_reg( OUT_X_L, 1 );
+		std::cout << "\ny";
+		read_reg( OUT_Y_L, 1 );
+		std::cout << "\nz";
+		read_reg( OUT_Z_L, 1 );
+		sleep (1);	/* Delay for second. */
+	}
+}
 
