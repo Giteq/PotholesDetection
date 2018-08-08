@@ -10,6 +10,23 @@
 
 #define SELF_TEST_LEN	10  /* Time in seconds. */	
 
+union reg8 __attribute__((packed))
+{
+	struct bits
+	{
+		uint8_t b0 : 1;
+		uint8_t b1 : 1;
+		uint8_t b2 : 1;
+		uint8_t b3 : 1;
+		uint8_t b4 : 1;
+		uint8_t b5 : 1;
+		uint8_t b6 : 1;
+		uint8_t b7 : 1;
+	};
+
+	uint8_t byte;
+};
+
 enum
 {
 	BYPASS_MODE = 0u,
@@ -24,6 +41,7 @@ enum
 enum
 {
 	CTRL1 = 0x20,		/* Register with output data rate select, axis enable, power mode, and bandwidth selection. */
+	CTRL2 = 0x21,
 	FIFO_CTRL = 0x2E,	/* Register with mode cnfiguration. */
 	FIFO_SRC = 0x2F, 	/* Register with informations about FIFO(s.43 datasheet). */
 	OUT_X_L = 0x28,		/* Registers with x axis values. */
@@ -96,6 +114,11 @@ bool is_acc_on()
 
 bool imu_self_test()
 {
+	reg8.byte = read_reg(CTRL2, 0);
+	reg8.bits.b1 = 1;		/* Set self test bit. */
+	write_reg(CTRL2, reg8.byte);
+	
+	
 	clock_t start = clock();
 	clock_t stop = clock();
 	while (stop - start <= SELF_TEST_LEN * CLOCKS_PER_SEC)
