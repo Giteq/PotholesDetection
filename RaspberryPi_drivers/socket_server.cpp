@@ -8,6 +8,7 @@
 #include <netinet/in.h>
 #include <string.h>
 #include <iostream>
+#include "socket_server.h"
 
 #define PORT 8080
 void wait_for_tcp_conn(void)
