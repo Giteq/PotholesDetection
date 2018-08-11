@@ -1,21 +1,36 @@
+# Directory to serach source files.
+VPATH = src
+#Source files.
+SRC = 	main.cpp \
+		drv_acc.cpp \
+		socket_server.cpp
+		
+DEPS = $(patsubst %.cpp, deps.$(CFG)/%.d, ${SRC})
+OBJS = $(patsubst %.cpp, objs$(CFG)/%.o, ${SRC})		
+
 PROG = exe
 CC = g++
+CCDEP = g++
 CPPFLAGS = -g -Wall -I/.
 LDFLAGS = -lwiringPi 
-OBJS = main.o socket_server.o drv_acc.o
+INCLUDEFLAGS = -I src
 
-# sciezka do bibliotek c++-L/usr/include/c++/6.3.0 
+all:		bin$(CFG)/${PROG}
 
-$(PROG) : $(OBJS)
-		$(CC) $(LDFLAGS) -o $(PROG) $(OBJS)
-main.o :
-		$(CC) $(CPPFLAGS) -c main.cpp
-
-socket_server.o: socket_server.h	
-		$(CC) $(CPPFLAGS) -c socket_server.cpp
-
-drv_acc.o: drv_acc.h
-		$(CC) $(CPPFLAGS) -c drv_acc.cpp	
-
+bin$(CFG)/${PROG}: ${OBJS}
+		@mkdir -p $(dir $@)
+		$(CC) -g -o $@ $^ ${LDFLAGS}
+		
+objs$(CFG)/%.o: %.cpp
+		@mkdir -p $(dir $@)
+		$(CC) -c $(CPPFLAGS) -o $@ $<
+		
+deps.$(CFG)/%.d: %.cpp
+		@mkdir -p $(dir $@)
+		@set -e ; $(CCDEP) -MM -MP $(INCLUDEFLAGS) $< > $@.$$$$; \
+		rm -f $@.$$$$
+		
 clean:
-		rm -f core $(PROG) $(OBJS)
+		@rm -rf \
+		deps.debug objs.debug bin.debug \
+		deps.release objs.release bin.release
