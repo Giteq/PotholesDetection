@@ -5,11 +5,12 @@
 #include <unistd.h>
 #include "drv_acc.h"
 
-#define uint8_t	char
-
 #define ACCELEROMETER_I2C_ADDR	0x6B
 
 #define SELF_TEST_LEN	10  /* Time in seconds. */	
+
+/* Unique device identificator. */
+#define ACC_IDENTIFICATOR 0b11010111
 
 struct splited_bits
 {
@@ -40,8 +41,26 @@ enum
 	BYPASS_TO_FIFO_MODE = 7u
 };
 
+/* Default values of control registers. */
 enum
 {
+	/* 800Hz, no Cut-off, normal mode, all axes enabled. */
+	CTRL1_DEFAULT =  0b11101111,
+	/* Not changed. */
+	CTRL2_DEFAULT =  0,
+	/* Not changed. */
+	CTRL3_DEFAULT = 0,
+	/* Not changed. NOTE:Full scale selection. */
+	CTRL4_DEFAULT = 0,
+	/* FIFO enable, NOTE: Out selection configuration. */
+	CTRL5_DEFAULT = 0b01000000,
+	/* FIFO mode select. */
+	FIFO_CONTROL_DEFAULT = 0b00100000
+};
+
+enum
+{
+	WHO_AM_I = 0x0Fu,
 	CTRL1 = 0x20,		/* Register with output data rate select, axis enable, power mode, and bandwidth selection. */
 	CTRL2 = 0x21,
 	CTRL3 = 0x0,		/* Interrupt disabled. */
@@ -60,12 +79,34 @@ enum
 
 static int write_reg(uint8_t address, uint8_t value);
 
-static int read_reg(int address);
-
 static float acc_read_to_g(int acc_read);
+
+static int ferq = 800; /*Frequency of measurment in Herz. */
+
+static int fd;
 
 void init_acc()
 {
+	fd = wiringPiI2CSetup(ACCELEROMETER_I2C_ADDR);
+	write_reg(CTRL1, CTRL1_DEFAULT);
+	write_reg(CTRL5, CTRL5_DEFAULT);
+	write_reg(FIFO_CTRL, FIFO_CONTROL_DEFAULT);
+	
+	turn_acc_on();
+}
+
+void drv_acc_measure(uint16_t *all_axis)
+{
+	unsigned int x, y, z;
+	x = (uint8_t)read_reg(OUT_X_L);
+	x |= ((uint16_t)read_reg(OUT_X_H) << 8u);
+	all_axis[0u] = x;
+	y = (uint8_t)read_reg(OUT_Y_L);
+	y |= ((uint16_t)read_reg(OUT_Y_H) << 8u);
+	all_axis[1u] = y;
+	z = (uint8_t)read_reg(OUT_Z_L);
+	z |= ((uint16_t)read_reg(OUT_Z_H) << 8u);
+	all_axis[2u] = z;
 	
 }
 
@@ -152,8 +193,6 @@ static float acc_read_to_g(int acc_read)
 int write_reg(uint8_t address, uint8_t value)
 {
 	int ret_val;
-	int fd;
-	fd = wiringPiI2CSetup(ACCELEROMETER_I2C_ADDR);
 	ret_val = wiringPiI2CWriteReg8(fd, address, value);
 	
 	return ret_val;
@@ -163,7 +202,6 @@ int read_reg(int address)
 {
 	int ret_val;
 	int fd;
-	fd = wiringPiI2CSetup(ACCELEROMETER_I2C_ADDR);
 	ret_val = wiringPiI2CReadReg8(fd, address);
 	
 	
