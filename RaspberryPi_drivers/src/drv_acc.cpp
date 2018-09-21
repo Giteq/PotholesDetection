@@ -201,7 +201,6 @@ int write_reg(uint8_t address, uint8_t value)
 int read_reg(int address)
 {
 	int ret_val;
-	int fd;
 	ret_val = wiringPiI2CReadReg8(fd, address);
 	
 	
