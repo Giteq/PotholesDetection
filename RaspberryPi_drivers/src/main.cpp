@@ -12,31 +12,30 @@ std::ofstream file("/home/pi/Documents/Git/PolesDetection/RaspberryPi_drivers/bi
 
 int main(void)
 {	
-	uint16_t measure[3u];
+	int16_t measure[3u];
+	Accelerometer acc;
+	unsigned long long int time = 0;
 	
 	std::cout << " X\t\tY\t\tZ\t\tTime[us]\n\r";
 	file << " X\t\tY\t\tZ\t\tTime[us]\n\r";
-	init_acc();
-	
-	unsigned long long int time = 0;
-	
+
 	while (1)
 	{
-		drv_acc_measure(measure);
+		acc.measure(measure);
 		std::cout << measure[0u] << "\t\t";
 		std::cout << measure[1u] << "\t\t";
 		std::cout << measure[2u] << "\t\t";
-		std::cout << time << "\n\r";
+		std::cout << time << "\n";
 		
 		file << measure[0u] << "\t\t";
 		file << measure[1u] << "\t\t";
 		file << measure[2u] << "\t\t";
-		file << time << "\n\r";
+		file << time << "\n";
 		usleep(1250u);
 		time += 1250u;
 	}
 	
-	turn_acc_off();
+	acc.turn_off();
 	
 	return 0;
 }
