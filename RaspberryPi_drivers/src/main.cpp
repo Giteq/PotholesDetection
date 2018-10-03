@@ -22,8 +22,15 @@ int main(void)
 	unsigned long long int time = 0;
 	unsigned long measure_delay = calc_one_measure_time(acc);
 	
-	std::cout << " X\t\tY\t\tZ\t\tTime[us]\n\r";
-	file << " X\t\tY\t\tZ\t\tTime[us]\n\r";
+	std::cout << "Press any key to continue..." << std::endl;
+	std::cin.get();
+	
+	std::cout << " X\t\tY\t\tZ\t\tTime[us]" << std::endl;
+	file << " X\t\tY\t\tZ\t\tTime[us]" << std::endl;
+
+	//system(RED_LED_OFF);
+	wait_for_tcp_conn();
+	//system(RED_LED_ON);
 
 	while (1)
 	{
