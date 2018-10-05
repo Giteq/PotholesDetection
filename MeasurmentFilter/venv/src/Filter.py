@@ -1,6 +1,8 @@
 import numbers
 import matplotlib.pyplot as plt
 from scipy.signal import butter, lfilter, freqz
+from datetime import datetime, timedelta
+import statistics
 
 #http://newline.nadav.org/
 
@@ -34,16 +36,39 @@ class Filtr:
         if 'x' in string:
             plt.subplot(3, 1, 1)
             plt.plot(self.time_measures, self.x_measures)
+            plt.gcf().autofmt_xdate()
             plt.ylabel('Filtered X')
         if 'y' in string:
             plt.subplot(3, 1, 2)
             plt.plot(self.time_measures, self.y_measures)
+            plt.gcf().autofmt_xdate()
             plt.ylabel('Filtered Y')
         if 'z' in string:
-            plt.subplot(3, 1, 3)
-            plt.plot(filter.time_measures, filter.z_measures)
+            plt.subplot(2, 1, 1)
+            plt.plot(self.time_measures, self.z_measures)
+            plt.gcf().autofmt_xdate()
+
+            poles = self.find_poles()
+            plt.subplot(2, 1, 2)
+            plt.plot(self.time_measures, poles)
+            plt.gcf().autofmt_xdate()
+
             plt.ylabel('Filtered Z')
         plt.show()
+
+    def find_poles(self):
+        std_dev = statistics.stdev(self.z_measures)
+        m = 2.2
+        poles_loc = []
+        times = []
+
+        for i in range(len(self.z_measures)):
+            if abs(self.z_measures[i]) > m * std_dev:
+                poles_loc.append(1)
+                times.append(self.time_measures[i])
+            else:
+                poles_loc.append(0)
+        return poles_loc
 
     def __butter_lowpass(self):
         nyq = 0.5 * self.fs
@@ -75,5 +100,5 @@ class Filtr:
                     print("Blad w czasie")
 
 if __name__ == "__main__":
-    filter = Filtr("C:/Projekty/PolesDetection/PolesDetection/RaspberryPi_drivers/bin/measurment.txt")
+    filter = Filtr("../../../RaspberryPi_drivers/bin/measurment.txt")
     filter.plot_result('z')
