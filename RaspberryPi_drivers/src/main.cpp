@@ -21,19 +21,25 @@ int main(void)
 	Accelerometer acc(1);
 	unsigned long long int time = 0;
 	unsigned long measure_delay = calc_one_measure_time(acc);
+	struct timespec time_now;
+	unsigned long start, stop;
+	
 	
 	std::cout << " X\t\tY\t\tZ\t\tTime[us]" << std::endl;
 	file << " X\t\tY\t\tZ\t\tTime[us]" << std::endl;
 
 
 	system(RED_LED_OFF);
-	//wait_for_tcp_conn();
+	wait_for_tcp_conn();
 	system(RED_LED_ON);
 
 	while (1)
 	{
-		
+	
+		clock_gettime(CLOCK_REALTIME, & time_now);
+		start = time_now.tv_nsec;
 		acc.measure(measure_data);
+		
 		std::cout << measure_data[0u] << "\t\t";
 		std::cout << measure_data[1u] << "\t\t";
 		std::cout << measure_data[2u] << "\t\t";
@@ -44,9 +50,10 @@ int main(void)
 		file << measure_data[2u] << "\t\t";
 		file << time << "\n";
 	
+		clock_gettime(CLOCK_REALTIME, & time_now);
+		stop = time_now.tv_nsec;
 		
-		//delay_us(1250u - (measure_delay / 1000u));
-		time += measure_delay;
+		time += stop - start;
 	}
 	
 	acc.turn_off();
