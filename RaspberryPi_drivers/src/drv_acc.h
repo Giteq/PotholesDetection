@@ -4,6 +4,12 @@
 
 #define int16_t short int
 
+enum acc_type_t
+{	
+ACC_1 = 0,
+ACC_2	
+};
+
 class Accelerometer
 {
 public:
@@ -40,6 +46,19 @@ public:
 		FIFO_CONTROL_DEFAULT = 0b00100000
 	};
 
+	
+	enum acc_2_adr
+	{
+		FIFO_CTRL5 = 0xAu,
+		CTRL1_XL = 0x10
+	};
+	
+	enum ctrl_registers_default_2
+	{
+		FIFO_CTRL5_DEFAULT = 0b01010110,
+		CTRL1_XL_DEFAULT = 0b10100000
+	};
+	
 	/**
 	 *  Register addresses.
 	 **/
@@ -71,6 +90,8 @@ public:
 	 **/
 	Accelerometer();
 	
+	Accelerometer(int acc_type);
+	
 	/**
 	 * Accelerometer class constructor. 
 	 * Initialize I2C communication and control registers of acc.
@@ -90,6 +111,13 @@ public:
 	 * @return		 
 	 **/
 	void measure(int16_t *all_axis);
+	
+	/**
+	 * Function returns value from WHO_AM_I register which reprezents type of Accelerometer.
+	 * 
+	 * @return		WHO_AM_I register value.
+	 */
+	uint8_t who_am_i(void);
 	
 	/**
 	 * Function turns off accelerometer.

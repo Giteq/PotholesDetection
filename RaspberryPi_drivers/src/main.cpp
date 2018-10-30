@@ -18,22 +18,21 @@ static void delay_us(unsigned int us);
 int main(void)
 {	
 	int16_t measure_data[3u];
-	Accelerometer acc;
+	Accelerometer acc(1);
 	unsigned long long int time = 0;
 	unsigned long measure_delay = calc_one_measure_time(acc);
-	
-	std::cout << "Press any key to continue..." << std::endl;
-	std::cin.get();
 	
 	std::cout << " X\t\tY\t\tZ\t\tTime[us]" << std::endl;
 	file << " X\t\tY\t\tZ\t\tTime[us]" << std::endl;
 
-	//system(RED_LED_OFF);
-	wait_for_tcp_conn();
-	//system(RED_LED_ON);
+
+	system(RED_LED_OFF);
+	//wait_for_tcp_conn();
+	system(RED_LED_ON);
 
 	while (1)
 	{
+		
 		acc.measure(measure_data);
 		std::cout << measure_data[0u] << "\t\t";
 		std::cout << measure_data[1u] << "\t\t";

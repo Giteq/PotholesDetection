@@ -11,6 +11,8 @@
 /* Default L3DG20H acc is chosed. */
 #define L3GD20H_I2C_ADDR	0x6B
 
+
+
 Accelerometer::Accelerometer()
 {
 	this->i2c_address = L3GD20H_I2C_ADDR;
@@ -20,6 +22,28 @@ Accelerometer::Accelerometer()
 	this->write_reg(FIFO_CTRL, FIFO_CONTROL_DEFAULT);
 	
 	this->turn_on();
+}
+
+Accelerometer::Accelerometer(int acc_type)
+{
+	if (acc_type == 0)
+	{
+		this->i2c_address = L3GD20H_I2C_ADDR;
+		this->fd = wiringPiI2CSetup(this->i2c_address);
+		this->write_reg(CTRL1, CTRL1_DEFAULT);
+		this->write_reg(CTRL5, CTRL5_DEFAULT);
+		this->write_reg(FIFO_CTRL, FIFO_CONTROL_DEFAULT);
+	
+		this->turn_on();
+	}
+	else
+	{
+		this->i2c_address = L3GD20H_I2C_ADDR;
+		this->fd = wiringPiI2CSetup(this->i2c_address);
+		this->write_reg(FIFO_CTRL5, FIFO_CTRL5_DEFAULT);
+		this->write_reg(CTRL1_XL, CTRL1_XL_DEFAULT);
+	}
+
 }
 
 Accelerometer::Accelerometer(uint8_t i2c_address)
@@ -46,6 +70,13 @@ void Accelerometer::measure(int16_t *all_axis)
 	z |= ((int16_t)this->read_reg(OUT_Z_H) << 8u);
 	all_axis[2u] = z;
 	
+}
+
+uint8_t Accelerometer::who_am_i(void)
+{
+	uint8_t ret_val = 0;
+	ret_val =  this->read_reg(WHO_AM_I);
+	return ret_val;
 }
 
 int Accelerometer::write_reg(uint8_t address, uint8_t value)
