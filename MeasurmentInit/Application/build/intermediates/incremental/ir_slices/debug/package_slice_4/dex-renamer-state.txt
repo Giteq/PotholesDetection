@@ -1,0 +1,4 @@
+#Fri Oct 19 14:48:56 CEST 2018
+base.0=C\:\\Projekty\\Git\\PolesDetection\\PolesDetection\\MeasurmentInit\\android-Camera2Video\\Application\\build\\intermediates\\transforms\\dexMerger\\debug\\594
+path.0=classes.dex
+renamed.0=classes.dex

@@ -1,0 +1,7 @@
+#Internal package file, do not edit.
+#Fri Oct 19 11:32:37 CEST 2018
+0.baseType=DIRECTORY
+0.base=C\:\\Projekty\\Git\\PolesDetection\\PolesDetection\\MeasurmentInit\\android-Camera2Video\\Application\\build\\intermediates\\transforms\\dexMerger\\debug\\589
+0.path=classes.dex
+0.set=DEX
+count=1

@@ -1,0 +1,137 @@
+-- Merging decision tree log ---
+manifest
+ADDED from C:\Projekty\Git\PolesDetection\PolesDetection\MeasurmentInit\android-Camera2Video\Application\src\main\AndroidManifest.xml:17:1-58:12
+INJECTED from C:\Projekty\Git\PolesDetection\PolesDetection\MeasurmentInit\android-Camera2Video\Application\src\main\AndroidManifest.xml:17:1-58:12
+INJECTED from C:\Projekty\Git\PolesDetection\PolesDetection\MeasurmentInit\android-Camera2Video\Application\src\main\AndroidManifest.xml:17:1-58:12
+MERGED from [com.android.support:support-v13:27.0.2] C:\Users\Work\.gradle\caches\transforms-1\files-1.1\support-v13-27.0.2.aar\ebc7e7a8c72f3f98431908347969c599\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-v4:27.0.2] C:\Users\Work\.gradle\caches\transforms-1\files-1.1\support-v4-27.0.2.aar\aada590fafcfe7ad7d05a3acad777274\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:cardview-v7:27.0.2] C:\Users\Work\.gradle\caches\transforms-1\files-1.1\cardview-v7-27.0.2.aar\b202f4d932764e67200f2ba3dfed2022\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:appcompat-v7:27.0.2] C:\Users\Work\.gradle\caches\transforms-1\files-1.1\appcompat-v7-27.0.2.aar\2a4f7fd3e44d3988a0364b810228d136\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-media-compat:27.0.2] C:\Users\Work\.gradle\caches\transforms-1\files-1.1\support-media-compat-27.0.2.aar\09ea0b5b90562bb54f74a17fb3c924dd\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-fragment:27.0.2] C:\Users\Work\.gradle\caches\transforms-1\files-1.1\support-fragment-27.0.2.aar\b15ad53477b2969acef0b32afa507dff\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-core-utils:27.0.2] C:\Users\Work\.gradle\caches\transforms-1\files-1.1\support-core-utils-27.0.2.aar\a10cca536829fd5d42eda2e04bce32fb\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:animated-vector-drawable:27.0.2] C:\Users\Work\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-27.0.2.aar\0b26ecdf97cc1dce3e838d758068314d\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-core-ui:27.0.2] C:\Users\Work\.gradle\caches\transforms-1\files-1.1\support-core-ui-27.0.2.aar\c5162c67e6aedfc13e3e620f7f220d62\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-vector-drawable:27.0.2] C:\Users\Work\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-27.0.2.aar\cc37a234d1c06779ab24f157e7ef068d\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-compat:27.0.2] C:\Users\Work\.gradle\caches\transforms-1\files-1.1\support-compat-27.0.2.aar\93cc15a05d643edd84163a0b62d3df38\AndroidManifest.xml:17:1-22:12
+MERGED from [android.arch.lifecycle:runtime:1.0.3] C:\Users\Work\.gradle\caches\transforms-1\files-1.1\runtime-1.0.3.aar\40ac4202b80e1c877b4a85b2254d63fc\AndroidManifest.xml:17:1-24:12
+INJECTED from C:\Projekty\Git\PolesDetection\PolesDetection\MeasurmentInit\android-Camera2Video\Application\src\main\AndroidManifest.xml:17:1-58:12
+INJECTED from C:\Projekty\Git\PolesDetection\PolesDetection\MeasurmentInit\android-Camera2Video\Application\src\main\AndroidManifest.xml:17:1-58:12
+	package
+		ADDED from C:\Projekty\Git\PolesDetection\PolesDetection\MeasurmentInit\android-Camera2Video\Application\src\main\AndroidManifest.xml:18:5-47
+	android:versionName
+		ADDED from C:\Projekty\Git\PolesDetection\PolesDetection\MeasurmentInit\android-Camera2Video\Application\src\main\AndroidManifest.xml:20:5-30
+		INJECTED from C:\Projekty\Git\PolesDetection\PolesDetection\MeasurmentInit\android-Camera2Video\Application\src\main\AndroidManifest.xml
+		INJECTED from C:\Projekty\Git\PolesDetection\PolesDetection\MeasurmentInit\android-Camera2Video\Application\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from C:\Projekty\Git\PolesDetection\PolesDetection\MeasurmentInit\android-Camera2Video\Application\src\main\AndroidManifest.xml:17:11-69
+	android:versionCode
+		ADDED from C:\Projekty\Git\PolesDetection\PolesDetection\MeasurmentInit\android-Camera2Video\Application\src\main\AndroidManifest.xml:19:5-28
+		INJECTED from C:\Projekty\Git\PolesDetection\PolesDetection\MeasurmentInit\android-Camera2Video\Application\src\main\AndroidManifest.xml
+		INJECTED from C:\Projekty\Git\PolesDetection\PolesDetection\MeasurmentInit\android-Camera2Video\Application\src\main\AndroidManifest.xml
+uses-permission#android.permission.CAMERA
+ADDED from C:\Projekty\Git\PolesDetection\PolesDetection\MeasurmentInit\android-Camera2Video\Application\src\main\AndroidManifest.xml:24:5-64
+	android:name
+		ADDED from C:\Projekty\Git\PolesDetection\PolesDetection\MeasurmentInit\android-Camera2Video\Application\src\main\AndroidManifest.xml:24:22-62
+uses-permission#android.permission.RECORD_AUDIO
+ADDED from C:\Projekty\Git\PolesDetection\PolesDetection\MeasurmentInit\android-Camera2Video\Application\src\main\AndroidManifest.xml:25:5-70
+	android:name
+		ADDED from C:\Projekty\Git\PolesDetection\PolesDetection\MeasurmentInit\android-Camera2Video\Application\src\main\AndroidManifest.xml:25:22-68
+uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
+ADDED from C:\Projekty\Git\PolesDetection\PolesDetection\MeasurmentInit\android-Camera2Video\Application\src\main\AndroidManifest.xml:26:5-80
+	android:name
+		ADDED from C:\Projekty\Git\PolesDetection\PolesDetection\MeasurmentInit\android-Camera2Video\Application\src\main\AndroidManifest.xml:26:22-78
+uses-permission#android.permission.READ_EXTERNAL_STORAGE
+ADDED from C:\Projekty\Git\PolesDetection\PolesDetection\MeasurmentInit\android-Camera2Video\Application\src\main\AndroidManifest.xml:27:5-79
+	android:name
+		ADDED from C:\Projekty\Git\PolesDetection\PolesDetection\MeasurmentInit\android-Camera2Video\Application\src\main\AndroidManifest.xml:27:22-77
+uses-permission#android.permission.INTERNET
+ADDED from C:\Projekty\Git\PolesDetection\PolesDetection\MeasurmentInit\android-Camera2Video\Application\src\main\AndroidManifest.xml:30:5-67
+	android:name
+		ADDED from C:\Projekty\Git\PolesDetection\PolesDetection\MeasurmentInit\android-Camera2Video\Application\src\main\AndroidManifest.xml:30:22-64
+uses-permission#android.permission.ACCESS_FINE_LOCATION
+ADDED from C:\Projekty\Git\PolesDetection\PolesDetection\MeasurmentInit\android-Camera2Video\Application\src\main\AndroidManifest.xml:31:5-79
+	android:name
+		ADDED from C:\Projekty\Git\PolesDetection\PolesDetection\MeasurmentInit\android-Camera2Video\Application\src\main\AndroidManifest.xml:31:22-76
+uses-permission#android.permission.ACCESS_COARSE_LOCATION
+ADDED from C:\Projekty\Git\PolesDetection\PolesDetection\MeasurmentInit\android-Camera2Video\Application\src\main\AndroidManifest.xml:32:5-81
+	android:name
+		ADDED from C:\Projekty\Git\PolesDetection\PolesDetection\MeasurmentInit\android-Camera2Video\Application\src\main\AndroidManifest.xml:32:22-78
+uses-permission#android.permission.ACCESS_MOCK_LOCATION
+ADDED from C:\Projekty\Git\PolesDetection\PolesDetection\MeasurmentInit\android-Camera2Video\Application\src\main\AndroidManifest.xml:33:5-79
+	android:name
+		ADDED from C:\Projekty\Git\PolesDetection\PolesDetection\MeasurmentInit\android-Camera2Video\Application\src\main\AndroidManifest.xml:33:22-76
+uses-permission#android.permission.ACCESS_NETWORK_STATE
+ADDED from C:\Projekty\Git\PolesDetection\PolesDetection\MeasurmentInit\android-Camera2Video\Application\src\main\AndroidManifest.xml:34:5-79
+	android:name
+		ADDED from C:\Projekty\Git\PolesDetection\PolesDetection\MeasurmentInit\android-Camera2Video\Application\src\main\AndroidManifest.xml:34:22-76
+application
+ADDED from C:\Projekty\Git\PolesDetection\PolesDetection\MeasurmentInit\android-Camera2Video\Application\src\main\AndroidManifest.xml:37:5-56:19
+	android:label
+		ADDED from C:\Projekty\Git\PolesDetection\PolesDetection\MeasurmentInit\android-Camera2Video\Application\src\main\AndroidManifest.xml:38:9-41
+	android:icon
+		ADDED from C:\Projekty\Git\PolesDetection\PolesDetection\MeasurmentInit\android-Camera2Video\Application\src\main\AndroidManifest.xml:39:9-45
+	android:allowBackup
+		ADDED from C:\Projekty\Git\PolesDetection\PolesDetection\MeasurmentInit\android-Camera2Video\Application\src\main\AndroidManifest.xml:37:18-44
+	android:theme
+		ADDED from C:\Projekty\Git\PolesDetection\PolesDetection\MeasurmentInit\android-Camera2Video\Application\src\main\AndroidManifest.xml:40:9-45
+service#com.example.android.camera2video.GPS
+ADDED from C:\Projekty\Git\PolesDetection\PolesDetection\MeasurmentInit\android-Camera2Video\Application\src\main\AndroidManifest.xml:42:9-45:15
+	android:enabled
+		ADDED from C:\Projekty\Git\PolesDetection\PolesDetection\MeasurmentInit\android-Camera2Video\Application\src\main\AndroidManifest.xml:44:9-31
+	android:name
+		ADDED from C:\Projekty\Git\PolesDetection\PolesDetection\MeasurmentInit\android-Camera2Video\Application\src\main\AndroidManifest.xml:43:13-64
+activity#com.example.android.camera2video.CameraActivity
+ADDED from C:\Projekty\Git\PolesDetection\PolesDetection\MeasurmentInit\android-Camera2Video\Application\src\main\AndroidManifest.xml:48:5-54:20
+	android:label
+		ADDED from C:\Projekty\Git\PolesDetection\PolesDetection\MeasurmentInit\android-Camera2Video\Application\src\main\AndroidManifest.xml:49:19-51
+	android:name
+		ADDED from C:\Projekty\Git\PolesDetection\PolesDetection\MeasurmentInit\android-Camera2Video\Application\src\main\AndroidManifest.xml:48:15-45
+intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
+ADDED from C:\Projekty\Git\PolesDetection\PolesDetection\MeasurmentInit\android-Camera2Video\Application\src\main\AndroidManifest.xml:50:13-53:29
+action#android.intent.action.MAIN
+ADDED from C:\Projekty\Git\PolesDetection\PolesDetection\MeasurmentInit\android-Camera2Video\Application\src\main\AndroidManifest.xml:51:17-69
+	android:name
+		ADDED from C:\Projekty\Git\PolesDetection\PolesDetection\MeasurmentInit\android-Camera2Video\Application\src\main\AndroidManifest.xml:51:25-66
+category#android.intent.category.LAUNCHER
+ADDED from C:\Projekty\Git\PolesDetection\PolesDetection\MeasurmentInit\android-Camera2Video\Application\src\main\AndroidManifest.xml:52:17-77
+	android:name
+		ADDED from C:\Projekty\Git\PolesDetection\PolesDetection\MeasurmentInit\android-Camera2Video\Application\src\main\AndroidManifest.xml:52:27-74
+uses-sdk
+INJECTED from C:\Projekty\Git\PolesDetection\PolesDetection\MeasurmentInit\android-Camera2Video\Application\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from C:\Projekty\Git\PolesDetection\PolesDetection\MeasurmentInit\android-Camera2Video\Application\src\main\AndroidManifest.xml
+INJECTED from C:\Projekty\Git\PolesDetection\PolesDetection\MeasurmentInit\android-Camera2Video\Application\src\main\AndroidManifest.xml
+MERGED from [com.android.support:support-v13:27.0.2] C:\Users\Work\.gradle\caches\transforms-1\files-1.1\support-v13-27.0.2.aar\ebc7e7a8c72f3f98431908347969c599\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-v13:27.0.2] C:\Users\Work\.gradle\caches\transforms-1\files-1.1\support-v13-27.0.2.aar\ebc7e7a8c72f3f98431908347969c599\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-v4:27.0.2] C:\Users\Work\.gradle\caches\transforms-1\files-1.1\support-v4-27.0.2.aar\aada590fafcfe7ad7d05a3acad777274\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-v4:27.0.2] C:\Users\Work\.gradle\caches\transforms-1\files-1.1\support-v4-27.0.2.aar\aada590fafcfe7ad7d05a3acad777274\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:cardview-v7:27.0.2] C:\Users\Work\.gradle\caches\transforms-1\files-1.1\cardview-v7-27.0.2.aar\b202f4d932764e67200f2ba3dfed2022\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:cardview-v7:27.0.2] C:\Users\Work\.gradle\caches\transforms-1\files-1.1\cardview-v7-27.0.2.aar\b202f4d932764e67200f2ba3dfed2022\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:appcompat-v7:27.0.2] C:\Users\Work\.gradle\caches\transforms-1\files-1.1\appcompat-v7-27.0.2.aar\2a4f7fd3e44d3988a0364b810228d136\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:appcompat-v7:27.0.2] C:\Users\Work\.gradle\caches\transforms-1\files-1.1\appcompat-v7-27.0.2.aar\2a4f7fd3e44d3988a0364b810228d136\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-media-compat:27.0.2] C:\Users\Work\.gradle\caches\transforms-1\files-1.1\support-media-compat-27.0.2.aar\09ea0b5b90562bb54f74a17fb3c924dd\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-media-compat:27.0.2] C:\Users\Work\.gradle\caches\transforms-1\files-1.1\support-media-compat-27.0.2.aar\09ea0b5b90562bb54f74a17fb3c924dd\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-fragment:27.0.2] C:\Users\Work\.gradle\caches\transforms-1\files-1.1\support-fragment-27.0.2.aar\b15ad53477b2969acef0b32afa507dff\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-fragment:27.0.2] C:\Users\Work\.gradle\caches\transforms-1\files-1.1\support-fragment-27.0.2.aar\b15ad53477b2969acef0b32afa507dff\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-utils:27.0.2] C:\Users\Work\.gradle\caches\transforms-1\files-1.1\support-core-utils-27.0.2.aar\a10cca536829fd5d42eda2e04bce32fb\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-utils:27.0.2] C:\Users\Work\.gradle\caches\transforms-1\files-1.1\support-core-utils-27.0.2.aar\a10cca536829fd5d42eda2e04bce32fb\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:animated-vector-drawable:27.0.2] C:\Users\Work\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-27.0.2.aar\0b26ecdf97cc1dce3e838d758068314d\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:animated-vector-drawable:27.0.2] C:\Users\Work\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-27.0.2.aar\0b26ecdf97cc1dce3e838d758068314d\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-ui:27.0.2] C:\Users\Work\.gradle\caches\transforms-1\files-1.1\support-core-ui-27.0.2.aar\c5162c67e6aedfc13e3e620f7f220d62\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-ui:27.0.2] C:\Users\Work\.gradle\caches\transforms-1\files-1.1\support-core-ui-27.0.2.aar\c5162c67e6aedfc13e3e620f7f220d62\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-vector-drawable:27.0.2] C:\Users\Work\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-27.0.2.aar\cc37a234d1c06779ab24f157e7ef068d\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-vector-drawable:27.0.2] C:\Users\Work\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-27.0.2.aar\cc37a234d1c06779ab24f157e7ef068d\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-compat:27.0.2] C:\Users\Work\.gradle\caches\transforms-1\files-1.1\support-compat-27.0.2.aar\93cc15a05d643edd84163a0b62d3df38\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-compat:27.0.2] C:\Users\Work\.gradle\caches\transforms-1\files-1.1\support-compat-27.0.2.aar\93cc15a05d643edd84163a0b62d3df38\AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:runtime:1.0.3] C:\Users\Work\.gradle\caches\transforms-1\files-1.1\runtime-1.0.3.aar\40ac4202b80e1c877b4a85b2254d63fc\AndroidManifest.xml:20:5-22:41
+MERGED from [android.arch.lifecycle:runtime:1.0.3] C:\Users\Work\.gradle\caches\transforms-1\files-1.1\runtime-1.0.3.aar\40ac4202b80e1c877b4a85b2254d63fc\AndroidManifest.xml:20:5-22:41
+INJECTED from C:\Projekty\Git\PolesDetection\PolesDetection\MeasurmentInit\android-Camera2Video\Application\src\main\AndroidManifest.xml
+INJECTED from C:\Projekty\Git\PolesDetection\PolesDetection\MeasurmentInit\android-Camera2Video\Application\src\main\AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from C:\Projekty\Git\PolesDetection\PolesDetection\MeasurmentInit\android-Camera2Video\Application\src\main\AndroidManifest.xml
+		ADDED from C:\Projekty\Git\PolesDetection\PolesDetection\MeasurmentInit\android-Camera2Video\Application\src\main\AndroidManifest.xml
+		INJECTED from C:\Projekty\Git\PolesDetection\PolesDetection\MeasurmentInit\android-Camera2Video\Application\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from C:\Projekty\Git\PolesDetection\PolesDetection\MeasurmentInit\android-Camera2Video\Application\src\main\AndroidManifest.xml
+		ADDED from C:\Projekty\Git\PolesDetection\PolesDetection\MeasurmentInit\android-Camera2Video\Application\src\main\AndroidManifest.xml
+		INJECTED from C:\Projekty\Git\PolesDetection\PolesDetection\MeasurmentInit\android-Camera2Video\Application\src\main\AndroidManifest.xml

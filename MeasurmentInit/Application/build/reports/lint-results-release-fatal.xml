@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="4" by="lint 3.1.3">
+
+    <issue
+        id="MockLocation"
+        severity="Fatal"
+        message="Mock locations should only be requested in a test or debug-specific manifest file (typically `src/debug/AndroidManifest.xml`)"
+        category="Correctness"
+        priority="8"
+        summary="Using mock location provider in production"
+        explanation="Using a mock location provider (by requiring the permission `android.permission.ACCESS_MOCK_LOCATION`) should **only** be done in debug builds (or from tests). In Gradle projects, that means you should only request this permission in a test or debug source set specific manifest file.&#xA;&#xA;To fix this, create a new manifest file in the debug folder and move the `&lt;uses-permission>` element there. A typical path to a debug manifest override file in a Gradle project is src/debug/AndroidManifest.xml."
+        errorLine1="    &lt;uses-permission android:name=&quot;android.permission.ACCESS_MOCK_LOCATION&quot; />"
+        errorLine2="                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        quickfix="studio">
+        <location
+            file="C:\Projekty\Git\PolesDetection\PolesDetection\MeasurmentInit\android-Camera2Video\Application\src\main\AndroidManifest.xml"
+            line="33"
+            column="22"/>
+    </issue>
+
+</issues>
