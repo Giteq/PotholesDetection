@@ -50,13 +50,23 @@ public:
 	enum acc_2_adr
 	{
 		FIFO_CTRL5 = 0xAu,
-		CTRL1_XL = 0x10
+		CTRL1_XL = 0x10u,
+		CTRL2_G = 0x11u,
+		CTRL3_C = 0x12u,
+		CTRL4_C = 0x13u,
+		CTRL5_C = 0x14u,
+		CTRL6_G = 0x15u,
+		CTRL7_G = 0x16u,
+		CTRL8_XL = 0x17u,
+		CTRL9_XL = 0x18u,
+		CTRL10_C = 0x19u,
+		STATUS_REG = 0x1Eu
 	};
 	
 	enum ctrl_registers_default_2
 	{
 		FIFO_CTRL5_DEFAULT = 0b01010110,
-		CTRL1_XL_DEFAULT = 0b10100000
+		CTRL1_XL_DEFAULT = 0b01010000
 	};
 	
 	/**
@@ -118,6 +128,11 @@ public:
 	 * @return		WHO_AM_I register value.
 	 */
 	uint8_t who_am_i(void);
+	
+	/**
+	 * Function does self test. Checked in LSM6DS33.
+	 * */
+	int16_t self_test(void);
 	
 	/**
 	 * Function turns off accelerometer.

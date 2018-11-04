@@ -3,6 +3,8 @@
 #include <wiringPiI2C.h>
 #include <time.h>
 #include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include "drv_acc.h"
 
 /* Unique device identificator. */
@@ -76,6 +78,148 @@ uint8_t Accelerometer::who_am_i(void)
 {
 	uint8_t ret_val = 0;
 	ret_val =  this->read_reg(WHO_AM_I);
+	return ret_val;
+}
+
+int16_t find_minimum(int16_t buffer[5][3], int axis)
+{
+	int16_t minimum = buffer[0][axis];
+	
+	for (int i=0; i<5; i++)
+	{
+		if (minimum > buffer[i][axis])
+		{
+			minimum = buffer[i][axis];
+		}
+	}
+	return minimum;
+}
+
+int16_t find_maximum(int16_t buffer[5][3], int axis)
+{
+	int16_t maximum = buffer[0][axis];
+	
+	for (int i=0; i<5; i++)
+	{
+		if (maximum < buffer[i][axis])
+		{
+			maximum = buffer[i][axis];
+		}
+	}
+	return maximum;
+}
+
+int16_t Accelerometer::self_test(void)
+{
+	
+	int16_t out_nost[5u][3u];
+	int16_t out_st[5u][3u];
+	int16_t ret_val = 1;
+		
+	this->write_reg(CTRL1_XL, 0x30u);
+	this->write_reg(CTRL2_G, 0x00u);
+	this->write_reg(CTRL3_C, 0x44u);
+	this->write_reg(CTRL4_C, 0x00u);
+	this->write_reg(CTRL5_C, 0x00u);
+	this->write_reg(CTRL6_G, 0x00u);
+	this->write_reg(CTRL7_G, 0x00u);
+	this->write_reg(CTRL8_XL, 0x00u);
+	this->write_reg(CTRL9_XL, 0x38u);
+	this->write_reg(CTRL10_C, 0x00u);
+	
+	sleep(1);
+	
+	int16_t status_reg = this->read_reg(STATUS_REG);
+	
+	/* Wait until data are available. */
+	while ((status_reg & 0x01u) != 1)
+	{
+		status_reg = this->read_reg(STATUS_REG);
+	}
+	
+	/* Clearing flag, data discared. */
+	this->measure(out_nost[0u]);
+	
+	for (int i=0; i<5; i++)
+	{
+		this->measure(out_nost[i]);
+	}
+	int16_t out_nost_avrg[3u] = {0u};
+	for (int j=0; j<3; j++)
+	{
+		for (int i=0; i<5; i++)
+		{	
+			out_nost_avrg[j] += out_nost[i][j];
+		}
+		out_nost_avrg[j] /= 5;
+	}
+	
+	/* Enable ACC test. */	
+	this->write_reg(CTRL5_C, 0x01u);
+	
+		/* Wait until data are available. */
+	while ((status_reg & 0x01u) != 1)
+	{
+		status_reg = this->read_reg(STATUS_REG);
+	}
+	
+	/* Clearing flag, data discared. */
+	this->measure(out_st[0u]);
+	
+		for (int i=0; i<5; i++)
+	{
+		this->measure(out_nost[i]);
+	}
+	int16_t out_st_avrg[3u] = {0u};
+	for (int j=0; j<3; j++)
+	{
+		for (int i=0; i<5; i++)
+		{	
+			out_st_avrg[j] += out_st[i][j];
+		}
+		out_st_avrg[j] /= 5;
+	}
+	int min, max;
+	
+	for (int i=0; i<3; i++)
+	{
+		min = find_minimum(out_st, i);
+		max = find_maximum(out_st, i);
+		if ( min > out_st_avrg[i] - out_nost_avrg[i])
+		{
+			ret_val = 0;
+		}
+		else if (max < out_st_avrg[i] - out_nost_avrg[i])
+		{
+			ret_val = 0;
+		}
+		if (ret_val == 0)
+		{
+			std::cout << "Blad na osi" <<i << std::endl;
+		}
+	}
+	
+	
+	for (int i = 0; i<5; i++)
+	{
+		std::cout << "Nost = ";
+		std::cout << "X = " << out_nost[i][0];
+		std::cout << "\tY = "  << out_nost[i][1];
+		std::cout << "\tZ = "  << out_nost[i][2] << std::endl;
+	}
+	for (int i=0; i<5; i++)
+	{
+		std::cout << "ST = ";
+		std::cout << "X = "  << out_st[i][0];
+		std::cout << "\tY = "  << out_st[i][1];
+		std::cout << "\tZ = "  << out_st[i][2] << std::endl;
+	}
+	
+	std::cout << "Min = " << min << "  Max = " << max << std::endl;
+	
+	this->write_reg(CTRL1_XL, 0x0);
+	this->write_reg(CTRL5_C, 0x0);
+	
 	return ret_val;
 }
 

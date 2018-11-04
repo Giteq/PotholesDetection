@@ -3,27 +3,21 @@
 #include "socket_server.h"
 #include <wiringPi.h>
 #include <fstream>
-#include <unistd.h>
-#include <sys/time.h>
+#include <chrono>
 
 #define RED_LED_OFF "python3 /home/pi/Documents/Git/PolesDetection/RaspberryPi_drivers/src/green_led_off.py"
 #define RED_LED_ON  "python3 /home/pi/Documents/Git/PolesDetection/RaspberryPi_drivers/src/green_led_on.py"
 
 std::ofstream file("/home/pi/Documents/Git/PolesDetection/RaspberryPi_drivers/bin/measurment.txt",std::fstream::out | std::fstream::app);
 
-static unsigned long calc_one_measure_time(Accelerometer acc);
-
-static void delay_us(unsigned int us);
-
 int main(void)
 {	
 	int16_t measure_data[3u];
 	Accelerometer acc(1);
-	unsigned long long int time = 0;
-	unsigned long measure_delay = calc_one_measure_time(acc);
-	struct timespec time_now;
-	unsigned long start, stop;
+	std::chrono::duration<double> time;
 	
+	auto start = std::chrono::high_resolution_clock::now();
+	auto stop = std::chrono::high_resolution_clock::now();
 	
 	std::cout << " X\t\tY\t\tZ\t\tTime[us]" << std::endl;
 	file << " X\t\tY\t\tZ\t\tTime[us]" << std::endl;
@@ -35,24 +29,20 @@ int main(void)
 
 	while (1)
 	{
-	
-		clock_gettime(CLOCK_REALTIME, & time_now);
-		start = time_now.tv_nsec;
+		start = std::chrono::high_resolution_clock::now();
 		acc.measure(measure_data);
 		
 		std::cout << measure_data[0u] << "\t\t";
 		std::cout << measure_data[1u] << "\t\t";
 		std::cout << measure_data[2u] << "\t\t";
-		std::cout << time << "\n";
+		std::cout << time.count()  << "\n";
 		
 		file << measure_data[0u] << "\t\t";
 		file << measure_data[1u] << "\t\t";
 		file << measure_data[2u] << "\t\t";
-		file << time << "\n";
+		file << time.count()  << "\n";
 	
-		clock_gettime(CLOCK_REALTIME, & time_now);
-		stop = time_now.tv_nsec;
-		
+		stop = std::chrono::high_resolution_clock::now();
 		time += stop - start;
 	}
 	
@@ -61,34 +51,4 @@ int main(void)
 	return 0;
 }
 
-unsigned long calc_one_measure_time(Accelerometer acc)
-{
-	struct timespec time_now;
-	unsigned long start;
-	int16_t measure_data[3u];
-	clock_gettime(CLOCK_REALTIME, & time_now);
-	start = time_now.tv_nsec;
-	acc.measure(measure_data);
-	clock_gettime(CLOCK_REALTIME, & time_now);
-	return time_now.tv_nsec - start;
-}
-
-void delay_us(unsigned int us)
-{
-	struct timespec time_now;
-	unsigned long int start_nsec;
-	clock_gettime(CLOCK_REALTIME, & time_now);
-	start_nsec = time_now.tv_nsec;
-	
-	for (;;)
-	{
-		clock_gettime(CLOCK_REALTIME, &time_now);
-		
-		if (time_now.tv_nsec - start_nsec > us * 1000u)
-		{
-			break;
-		}
-	}
-	
-}
 
