@@ -31,8 +31,8 @@ class Filtr:
         self.cutoff = 15  # desired cutoff frequency of the filter, Hz
         self.time_between_samples = 0.0032 #in seconds
         self.x_treshold = 0.1
-        self.vel_tresh = 0.05
-        self.y_tresh = 3
+        self.vel_tresh = 4.8
+        self.y_tresh = 8
         self.time_of_measure = measurment.time_of_measurment
         self.parse_file()
         self.filter_data()
@@ -60,21 +60,19 @@ class Filtr:
         self.not_fil_z = copy.copy(self.z_measures)
         self.z_measures = self.__butter_lowpass_filter(self.z_measures)
         self.x_measures = self.__butter_lowpass_filter(self.x_measures)
-        self.cutoff = 0.001
-        self.x_measures = self.__noch_filter(self.x_measures, 0.001)
-        self.x_measures = self.__kalman_filter(self.x_measures, process_variance=1e-3)
-        self.calculate_velocity()
-        self.cutoff = 15
         self.y_measures = self.__butter_lowpass_filter(self.y_measures)
-        self.cutoff = 0.001
-        self.y_measures = self.__noch_filter(self.y_measures, 0.001)
-        self.y_measures = self.__kalman_filter(self.y_measures, process_variance=1e-3)
+        self.cutoff = 0.0001
+        self.x_measures = self.__noch_filter(self.x_measures, 0.00015)
+        self.x_measures = self.__kalman_filter(self.x_measures, process_variance=1e-2)
+        self.calculate_velocity()
+        self.cutoff = 0.0001
+        self.y_measures = self.__noch_filter(self.y_measures, 0.00015)
+        self.y_measures = self.__kalman_filter(self.y_measures, process_variance=1e-2)
 
     def calculate_velocity(self):
         self.velocity = cumtrapz(self.x_measures, self.time_measures, initial=0)
 
     def plot_result(self, string):
-        _, treshold, moments_of_poles = self.find_poles()
 
         if 'x' in string:
             plt.figure(1)
@@ -94,13 +92,13 @@ class Filtr:
             plt.plot(self.time_measures, self.not_fil_z)
             plt.ylabel('Not filtered Z')
             plt.plot(self.time_measures, self.z_measures)
-            plt.axhline(y=treshold, color='r', linestyle='-')
-            plt.axhline(y=-treshold, color='r', linestyle='-')
+            plt.axhline(y=self.treshold, color='r', linestyle='-')
+            plt.axhline(y=-self.treshold, color='r', linestyle='-')
             plt.ylabel('Filtered Z')
             plt.legend(["Not filtered", "Filtered"])
 
         if 'v' in string:
-            plt.figure(5)
+            plt.figure(6)
             # plt.subplot(3, 1, 2)
             plt.plot(self.time_measures[:len(self.velocity)], self.velocity)
             # plt.gcf().autofmt_xdate()
@@ -109,31 +107,57 @@ class Filtr:
             plt.ylabel('Poles')
         plt.show()
 
+    def split_mesures(self, measures, time_measures, time_window):
+        splied_measures = [[]]
+        num_of_splited = 0
+        for i in range(len(measures)):
+            if time_measures[i] < time_window * (num_of_splited + 1):
+                splied_measures[num_of_splited].append(measures[i])
+            else:
+                num_of_splited += 1
+                splied_measures.append([])
+                splied_measures[num_of_splited].append(measures[i])
+
+        return splied_measures
+
     def find_poles(self):
+
+        time_window = 5
+
+        splited_z_measures = self.split_mesures(self.z_measures, self.time_measures, time_window)
+        splited_y_measures = self.split_mesures(self.y_measures, self.time_measures, time_window)
+        splited_velocity = self.split_mesures(self.velocity, self.time_measures, time_window)
+        splited_time_measures = self.split_mesures(self.time_measures, self.time_measures, time_window)
         std_dev = statistics.stdev(self.z_measures)
-        m = 1.8
+        m = 2.0
         poles_loc = set()
-        moments_of_poles = []   # 1-> there is pole, 0-> there is not
-        treshold = m * std_dev
-        time_window_size = 1
+        self.treshold = treshold = m * std_dev
+        num_of_probes_to_phole = 4
         found = 0
 
-        for i in range(len(self.time_measures) - time_window_size):
-            for j in range(time_window_size):
-                if abs(self.z_measures[i+j]) > treshold:
+        for window_no in range(len(splited_z_measures)):
+            std_dev = statistics.stdev(splited_z_measures[window_no])
+            treshold = m * std_dev
+            for i in range(len(splited_z_measures[window_no]) - num_of_probes_to_phole):
+                if abs(splited_z_measures[window_no][i]) > treshold and splited_y_measures[window_no][i] < self.y_tresh\
+                        and splited_velocity[window_no][i] > self.vel_tresh:
                     found += 1
-            if found == time_window_size and self.velocity[i] > self.vel_tresh and self.y_measures[i] < self.y_tresh:
-                poles_loc.add(int(self.time_measures[i]))
-                moments_of_poles.append(1)
-            else:
-                moments_of_poles.append(0)
-            found = False
-        return poles_loc, treshold, moments_of_poles
+                if found == num_of_probes_to_phole:
+                    poles_loc.add(round(splited_time_measures[window_no][i]))
+                    found = 0
+        return poles_loc, treshold
 
     def __butter_lowpass_filter(self, data):
         nyq = 0.5 * self.fs
         normal_cutoff =  self.cutoff / nyq
         b, a = butter(self.filterOrder, normal_cutoff, btype='lowpass', analog=False)
+        y = lfilter(b, a, data)
+        return y
+
+    def __butter_highpass_filter(self, data):
+        nyq = 0.5 * self.fs
+        normal_cutoff =  self.cutoff / nyq
+        b, a = butter(self.filterOrder, normal_cutoff, btype='highpass', analog=False)
         y = lfilter(b, a, data)
         return y
 
@@ -147,7 +171,7 @@ class Filtr:
 
     def __kalman_filter(self, measures, process_variance):
         measurement_standard_deviation = statistics.stdev(measures)
-        estimated_measurement_variance = measurement_standard_deviation ** 2  # 0.05 ** 2
+        estimated_measurement_variance = measurement_standard_deviation ** 2
         kalman_filter = KalmanFilter(process_variance, estimated_measurement_variance)
 
         for i in range(len(measures)):

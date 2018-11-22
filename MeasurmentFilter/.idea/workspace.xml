@@ -3,7 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="781b506c-46f4-45b7-93b5-f57602937e3c" name="Default" comment="Added time window, labeling measures, finding numbers of correct and wrong potholes.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MeasurmentInit/android-Camera2Video" beforeDir="false" afterPath="$PROJECT_DIR$/../MeasurmentInit/android-Camera2Video" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/src/Filter.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/src/Filter.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/src/main.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -15,59 +16,13 @@
     <SUITE FILE_PATH="coverage/MeasurmentFilter$Filter.coverage" NAME="Filter Coverage Results" MODIFIED="1541788717515" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv/src" />
     <SUITE FILE_PATH="coverage/MeasurmentFilter$main__1_.coverage" NAME="main (1) Coverage Results" MODIFIED="1541840732494" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv/src" />
   </component>
-  <component name="FUSProjectUsageTrigger">
-    <session id="1012561895">
-      <usages-collector id="statistics.lifecycle.project">
-        <counts>
-          <entry key="project.closed" value="7" />
-          <entry key="project.open.time.1" value="1" />
-          <entry key="project.open.time.11" value="2" />
-          <entry key="project.open.time.15" value="1" />
-          <entry key="project.open.time.17" value="1" />
-          <entry key="project.open.time.7" value="1" />
-          <entry key="project.open.time.8" value="2" />
-          <entry key="project.opened" value="8" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.extensions.edit">
-        <counts>
-          <entry key="Python Console" value="119" />
-          <entry key="dummy" value="9" />
-          <entry key="py" value="5380" />
-          <entry key="txt" value="139" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.types.edit">
-        <counts>
-          <entry key="PLAIN_TEXT" value="148" />
-          <entry key="Python" value="5499" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.extensions.open">
-        <counts>
-          <entry key="py" value="12" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.types.open">
-        <counts>
-          <entry key="Python" value="12" />
-        </counts>
-      </usages-collector>
-    </session>
-  </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="450">
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/venv/src/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="92">
-              <caret line="43" column="11" lean-forward="true" selection-start-line="43" selection-start-column="11" selection-end-line="43" selection-end-column="11" />
-              <folding>
-                <element signature="e#0#31#0" expanded="true" />
-                <marker date="1541840732447" expanded="true" signature="121:210" ph="..." />
-                <marker date="1541840732447" expanded="true" signature="354:1373" ph="..." />
-                <marker date="1541840732447" expanded="true" signature="1065:1066" ph="..." />
-              </folding>
+            <state relative-caret-position="210">
+              <caret line="111" column="45" lean-forward="true" selection-start-line="111" selection-start-column="45" selection-end-line="111" selection-end-column="45" />
             </state>
           </provider>
         </entry>
@@ -75,26 +30,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/venv/src/Measurment.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
+            <state relative-caret-position="30">
               <caret line="2" column="22" selection-start-line="2" selection-start-column="4" selection-end-line="2" selection-end-column="22" />
-              <folding>
-                <marker date="1541840169893" expanded="true" signature="17:22" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/venv/src/Labelator.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="161">
-              <caret line="13" column="38" selection-start-line="13" selection-start-column="38" selection-end-line="13" selection-end-column="38" />
-              <folding>
-                <element signature="e#0#35#0" expanded="true" />
-                <marker date="1541840716788" expanded="true" signature="461:462" ph="..." />
-                <marker date="1541840716788" expanded="true" signature="461:466" ph="..." />
-                <marker date="1541840716788" expanded="true" signature="1353:1357" ph="..." />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -102,12 +39,20 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/venv/src/Filter.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="197">
-              <caret line="32" column="8" lean-forward="true" selection-start-line="32" selection-start-column="8" selection-end-line="32" selection-end-column="60" />
+            <state relative-caret-position="75">
+              <caret line="56" column="25" lean-forward="true" selection-start-line="56" selection-start-column="25" selection-end-line="56" selection-end-column="25" />
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
-                <marker date="1541840701138" expanded="true" signature="3908:3917" ph="..." />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/venv/src/KalmanFilter.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="180">
+              <caret line="12" column="30" selection-start-line="12" selection-start-column="30" selection-end-line="12" selection-end-column="30" />
             </state>
           </provider>
         </entry>
@@ -129,6 +74,8 @@
       <find>x_measures</find>
       <find>calculate_velocity</find>
       <find>plt.show</find>
+      <find>vel_tresh</find>
+      <find>find_poles</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -142,8 +89,8 @@
         <option value="$PROJECT_DIR$/venv/src/Label_data.py" />
         <option value="$PROJECT_DIR$/venv/src/Filter1.py" />
         <option value="$PROJECT_DIR$/venv/src/Measurment.py" />
-        <option value="$PROJECT_DIR$/venv/src/Filter.py" />
         <option value="$PROJECT_DIR$/venv/src/Labelator.py" />
+        <option value="$PROJECT_DIR$/venv/src/Filter.py" />
         <option value="$PROJECT_DIR$/venv/src/main.py" />
       </list>
     </option>
@@ -165,6 +112,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -187,12 +135,11 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$USER_HOME$/Desktop/Uczelnia/Podstawy_cybernetyki/Lab3" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="PyScientificConfigurable" />
   </component>
   <component name="RunDashboard">
@@ -333,23 +280,22 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
-    <editor active="true" />
+    <frame x="67" y="25" width="1853" height="1055" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.14089069" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.14043716" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4534413" weight="0.32740214" />
-      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.48097166" weight="0.39679715" />
+      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49945354" weight="0.32963374" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4464481" weight="0.3263041" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.47540984" weight="0.3962264" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Terminal" order="8" />
       <window_info anchor="bottom" id="Python Console" order="9" sideWeight="0.49392712" weight="0.32740214" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5465587" side_tool="true" visible="true" weight="0.32740214" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5535519" side_tool="true" visible="true" weight="0.3263041" />
       <window_info anchor="bottom" id="Docker" order="11" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="12" show_stripe_button="false" />
       <window_info anchor="bottom" id="Concurrent Activities Diagram" order="13" sideWeight="0.49959514" weight="0.3291815" />
@@ -364,15 +310,19 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
-  <component name="VcsContentAnnotationSettings">
-    <option name="myLimit" value="2678400000" />
-  </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Added time window, labeling measures, finding numbers of correct and wrong potholes." />
     <option name="LAST_COMMIT_MESSAGE" value="Added time window, labeling measures, finding numbers of correct and wrong potholes." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/venv/src/Filter.py</url>
+          <line>147</line>
+          <option name="timeStamp" value="16" />
+        </line-breakpoint>
+      </breakpoints>
       <default-breakpoints>
         <breakpoint type="python-exception">
           <properties notifyOnTerminate="true" exception="BaseException">
@@ -394,72 +344,39 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/venv/src/Measure.py" />
     <entry file="file://$PROJECT_DIR$/venv/src/Project.py" />
-    <entry file="file://$PROJECT_DIR$/../../../../WinPython-64bit-3.6.3.0Qt5/python-3.6.3.amd64/Lib/site-packages/matplotlib/axes/_axes.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="117">
-          <caret line="1435" selection-start-line="1435" selection-end-line="1435" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$USER_HOME$/WinPython-64bit-3.6.3.0Qt5/python-3.6.3.amd64/Lib/site-packages/matplotlib/axes/_axes.py" />
     <entry file="file://$PROJECT_DIR$/venv/src/Filter1.py" />
-    <entry file="file://$PROJECT_DIR$/../../../../WinPython-64bit-3.6.3.0Qt5/python-3.6.3.amd64/Lib/site-packages/matplotlib/axes/_base.py">
+    <entry file="file://$USER_HOME$/WinPython-64bit-3.6.3.0Qt5/python-3.6.3.amd64/Lib/site-packages/matplotlib/axes/_base.py" />
+    <entry file="file://$USER_HOME$/WinPython-64bit-3.6.3.0Qt5/python-3.6.3.amd64/Lib/site-packages/nltk/tree.py" />
+    <entry file="file://$PROJECT_DIR$/venv/src/Labelator.py" />
+    <entry file="file://$PROJECT_DIR$/venv/src/KalmanFilter.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="86">
-          <caret line="242" selection-start-line="242" selection-end-line="242" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../../WinPython-64bit-3.6.3.0Qt5/python-3.6.3.amd64/Lib/site-packages/nltk/tree.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="117">
-          <caret line="207" column="8" selection-start-line="207" selection-start-column="8" selection-end-line="207" selection-end-column="8" />
+        <state relative-caret-position="180">
+          <caret line="12" column="30" selection-start-line="12" selection-start-column="30" selection-end-line="12" selection-end-column="30" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/venv/src/Measurment.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
+        <state relative-caret-position="30">
           <caret line="2" column="22" selection-start-line="2" selection-start-column="4" selection-end-line="2" selection-end-column="22" />
-          <folding>
-            <marker date="1541840169893" expanded="true" signature="17:22" ph="..." />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/venv/src/Filter.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="197">
-          <caret line="32" column="8" lean-forward="true" selection-start-line="32" selection-start-column="8" selection-end-line="32" selection-end-column="60" />
+        <state relative-caret-position="75">
+          <caret line="56" column="25" lean-forward="true" selection-start-line="56" selection-start-column="25" selection-end-line="56" selection-end-column="25" />
           <folding>
             <element signature="e#0#14#0" expanded="true" />
-            <marker date="1541840701138" expanded="true" signature="3908:3917" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/venv/src/Labelator.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="161">
-          <caret line="13" column="38" selection-start-line="13" selection-start-column="38" selection-end-line="13" selection-end-column="38" />
-          <folding>
-            <element signature="e#0#35#0" expanded="true" />
-            <marker date="1541840716788" expanded="true" signature="461:462" ph="..." />
-            <marker date="1541840716788" expanded="true" signature="461:466" ph="..." />
-            <marker date="1541840716788" expanded="true" signature="1353:1357" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/venv/src/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="92">
-          <caret line="43" column="11" lean-forward="true" selection-start-line="43" selection-start-column="11" selection-end-line="43" selection-end-column="11" />
-          <folding>
-            <element signature="e#0#31#0" expanded="true" />
-            <marker date="1541840732447" expanded="true" signature="121:210" ph="..." />
-            <marker date="1541840732447" expanded="true" signature="354:1373" ph="..." />
-            <marker date="1541840732447" expanded="true" signature="1065:1066" ph="..." />
-          </folding>
+        <state relative-caret-position="210">
+          <caret line="111" column="45" lean-forward="true" selection-start-line="111" selection-start-column="45" selection-end-line="111" selection-end-column="45" />
         </state>
       </provider>
     </entry>
