@@ -11,8 +11,11 @@ from scipy.integrate import cumtrapz
 import scipy.constants as constants
 from KalmanFilter import KalmanFilter
 import copy
+import scipy.signal as signal
 
 #http://newline.nadav.org/
+
+# '/usr/local/lib/python3.6/dist-packages/matplotlib/mpl-data/matplotlibrc' -> plik do zmiany domyślnej ścieżki do zapisywania wykresów
 
 #Liczenie G
 #http://ozzmaker.com/accelerometer-to-g/
@@ -27,11 +30,11 @@ class Filtr:
         self.not_filtr_z = []
         self.velocity = []
         self.fs = 1 / 0.0032
-        self.filterOrder = 5  # Order of Buttewroth filter.
-        self.cutoff = 15  # desired cutoff frequency of the filter, Hz
+        self.filterOrder = 4  # Order of Buttewroth filter.
+        self.cutoff = 16  # desired cutoff frequency of the filter, Hz
         self.time_between_samples = 0.0032 #in seconds
         self.x_treshold = 0.1
-        self.vel_tresh = 4.8
+        self.vel_tresh = 2.5
         self.y_tresh = 8
         self.time_of_measure = measurment.time_of_measurment
         self.parse_file()
@@ -49,7 +52,7 @@ class Filtr:
                     self.time_measures.append((float(lines[i][3])))
                     self.x_measures.append(int(lines[i][0]) / 40)
                     self.y_measures.append(int(lines[i][1]) / 40)
-                    self.z_measures.append(int(lines[i][2]) / 40)
+                    self.z_measures.append(int(lines[i][2]) / 200)
 
                 else:
                     break
@@ -63,14 +66,65 @@ class Filtr:
         self.y_measures = self.__butter_lowpass_filter(self.y_measures)
         self.cutoff = 0.0001
         self.x_measures = self.__noch_filter(self.x_measures, 0.00015)
-        self.x_measures = self.__kalman_filter(self.x_measures, process_variance=1e-2)
-        self.calculate_velocity()
-        self.cutoff = 0.0001
-        self.y_measures = self.__noch_filter(self.y_measures, 0.00015)
-        self.y_measures = self.__kalman_filter(self.y_measures, process_variance=1e-2)
+        # self.calculate_velocity()
+        self.x_std_dev = statistics.stdev(self.x_measures)
+        # self.x_measures = self.__kalman_filter(self.x_measures, process_variance=1e-2)
+
+        self.velocity = self.__kalman_2(self.x_measures)
+        self.velocity = [x * 10 for x in self.velocity]
+        # self.cutoff = 0.0001
+        # self.y_measures = self.__noch_filter(self.y_measures, 0.00015)
+        # self.y_measures = self.__kalman_filter(self.y_measures, process_variance=1e-2)
+        # self.y_measures, _ = self.__kalman_2(self.y_measures)
 
     def calculate_velocity(self):
         self.velocity = cumtrapz(self.x_measures, self.time_measures, initial=0)
+        self.velocity = [x * 5 for x in self.velocity]
+
+    def gen_second_velocity(self, start, stop):
+        ret_list = []
+        tmp2 = start
+        tmp = 0
+        while tmp < 1:
+            tmp += (1 / self.fs)
+            tmp2 += (stop - start) * (1 / self.fs)
+            ret_list.append(tmp2)
+
+        return ret_list
+
+    def gen_real_velocity(self):
+        tmp = []
+
+        # Pomiar nr 9
+        seconds = [0, 0, 0, 8, 21, 24, 28, 32, 39, 39, 40, 41, 44, 45, 45, 45, 45, 45, 45, 45, 46, 46, 46, 46, 47, 47, \
+                   47, 47, 47, 47, 47, 48, 47, 46, 45, 45, 45, 45, 43, 42, 40, 39, 34, 33, 32, 31, 33, 35, 34, 31, 28]
+
+
+        #xses = np.arange(0, (15650 * (1 / self.fs)), (1 / self.fs))
+
+        # #  Pomiar nr 14 2 minuty 3 sekundy xses = np.arange(0, (38499 * (1 / self.fs)), (1 / self.fs))
+        # seconds = [0, 13, 26, 32, 34, 36, 40, 43, 44, 46, 45, 45, 45, 45, 45, 45, 45, 46, 47, \
+        #            46, 46, 46, 46, 46, 46, 46, 46, 46, 46, 46, 46, 46, 46, 46, 46, 46, 46, 46, \
+        #            46, 46, 46, 46, 44, 43, 43, 42, 42, 42, 42, 41, 41, 41, 41, 41, 41, 38, 37, 37, 34, 30, 27, \
+        #            24,  11, 5, 0, 0, 0, 0, 0, 4, 13, 17, 23, 30, 38, 31, 41, 43, 46, 47, 49, 50, \
+        #            51, 51, 50, 46, 37, 33, 21, 23, 11, 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, \
+        #            6,  10, 17,  18, 23, 26, 31, 33, 33, 33, 29, 26, 18, 11, 8,9,  14, 18, 23]
+
+        # Pomiar nr 7 xses = np.arange(0, (38499 * (1 / self.fs)), (1 / self.fs))
+        # seconds = [0, 0, 8, 11, 19, 26, 31, 33, 34, 34, 35, 35, 35, 35, 34, 29, 28, \
+        #            26, 25, 25, 25, 26, 25, 24, 27, 29, 30, 32, 32, 33, 34, 34, 34, \
+        #            33, 35, 36, 36, 36, 37, 37,37, 38, 38, 38, 37, 37, 37, 37, 38, 39, \
+        #            40, 40, 39, 38, 38, 38, 38, 38, 39, 40, 41, 42, 42, 42, 42, 42, \
+        #            42, 43, 44, 44, 44, 44, 45, 45, 45, 45, 45, 44, 43, 41, 38, 35, \
+        #            31, 30, 27, 25, 26, 25, 24, 24, 25, 26, 27, 27, 27, 27, 26, 25, 23,
+        #             21, 12]
+
+        for i in range(len(seconds) - 1):
+            tmp.append(self.gen_second_velocity(seconds[i], seconds[i + 1]))
+        flatten = [item for sublist in tmp for item in sublist]
+        print(flatten)
+        xses = np.arange(0, (15650 * (1 / self.fs)), (1 / self.fs))
+        plt.plot(xses[:len(flatten)], flatten)
 
     def plot_result(self, string):
 
@@ -83,28 +137,26 @@ class Filtr:
 
         if 'y' in string:
             plt.figure(2)
-            # plt.subplot(3, 1, 2)
             plt.plot(self.time_measures, self.y_measures)
-            # plt.gcf().autofmt_xdate()
             plt.ylabel('Filtered Y')
         if 'z' in string:
             plt.figure(5)
-            plt.plot(self.time_measures, self.not_fil_z)
-            plt.ylabel('Not filtered Z')
             plt.plot(self.time_measures, self.z_measures)
-            plt.axhline(y=self.treshold, color='r', linestyle='-')
-            plt.axhline(y=-self.treshold, color='r', linestyle='-')
-            plt.ylabel('Filtered Z')
-            plt.legend(["Not filtered", "Filtered"])
+            # plt.plot(self.time_measures, self.not_fil_z)
+            plt.title('Odczyty z osi Z akcelerometru')
+            plt.ylabel("Przyspieszenie [g]")
+            plt.xlabel("Czas [s]")
 
         if 'v' in string:
             plt.figure(6)
-            # plt.subplot(3, 1, 2)
             plt.plot(self.time_measures[:len(self.velocity)], self.velocity)
-            # plt.gcf().autofmt_xdate()
-            plt.ylabel('Velocity')
-
-            plt.ylabel('Poles')
+            plt.ylabel('Zależność prędkości od czasu')
+            plt.ylabel("Prędkość [km/h]")
+            plt.xlabel("Czas [s]")
+            self.gen_real_velocity()
+            plt.legend(["Prędkość wyliczona", "Prędkość rzeczywista"])
+        if 'filter' in string:
+            self.__print_noch_char()
         plt.show()
 
     def split_mesures(self, measures, time_measures, time_window):
@@ -132,15 +184,15 @@ class Filtr:
         m = 2.0
         poles_loc = set()
         self.treshold = treshold = m * std_dev
-        num_of_probes_to_phole = 4
+        num_of_probes_to_phole = 10
         found = 0
 
         for window_no in range(len(splited_z_measures)):
             std_dev = statistics.stdev(splited_z_measures[window_no])
             treshold = m * std_dev
             for i in range(len(splited_z_measures[window_no]) - num_of_probes_to_phole):
-                if abs(splited_z_measures[window_no][i]) > treshold and splited_y_measures[window_no][i] < self.y_tresh\
-                        and splited_velocity[window_no][i] > self.vel_tresh:
+                if abs(splited_z_measures[window_no][i]) > treshold and splited_velocity[window_no][i] > self.vel_tresh:
+                    # and splited_y_measures[window_no][i] < self.y_tresh\
                     found += 1
                 if found == num_of_probes_to_phole:
                     poles_loc.add(round(splited_time_measures[window_no][i]))
@@ -149,8 +201,11 @@ class Filtr:
 
     def __butter_lowpass_filter(self, data):
         nyq = 0.5 * self.fs
-        normal_cutoff =  self.cutoff / nyq
+        normal_cutoff = (self.cutoff / nyq)
+        print(normal_cutoff)
         b, a = butter(self.filterOrder, normal_cutoff, btype='lowpass', analog=False)
+        self.b = b
+        self.a = a
         y = lfilter(b, a, data)
         return y
 
@@ -161,8 +216,50 @@ class Filtr:
         y = lfilter(b, a, data)
         return y
 
+    def __print_butter_char(self):
+        self.cutoff = 16
+        nyq = 0.5 * self.fs
+        normal_cutoff = (self.cutoff / nyq)
+        print(normal_cutoff)
+        b, a = butter(self.filterOrder, normal_cutoff, btype='lowpass', analog=False)
+        # Plot the frequency response.
+        w, h = freqz(b, a, worN=8000)
+        plt.plot(0.5 * self.fs * w / np.pi, np.abs(h), 'b')
+        plt.plot(self.cutoff, 0.5 * np.sqrt(2), 'ko')
+        plt.axvline(self.cutoff, color='k')
+        plt.xlim(0, 0.5 * self.fs)
+        plt.title("Charakterystyka amplitudowa dolnoprzepustowego filtru Butterwortha")
+        plt.xlabel('Częstotliwość [Hz]')
+        plt.ylabel('Wzmocnienie')
+        plt.grid()
+
+    def __print_noch_char(self):
+        nyq = 0.5 * self.fs
+        normal_cutoff = self.cutoff / nyq
+        Q = normal_cutoff / self.bandwidth
+        b, a = iirnotch(normal_cutoff, Q)
+        w, h = freqz(b, a, worN=8000)
+        h = [abs(x) if abs(x) > 0.9 else abs(x) - 0.5 for x in h]
+        plt.plot(0.5 * self.fs * w / np.pi, np.abs(h), 'b')
+
+        x = [0.00582,  0.051]
+        y = [0.5 * np.sqrt(2), 0.5 * np.sqrt(2)]
+        plt.text(np.average(x) - 0.015, y[0] + 0.01, "$\Delta f$")
+        plt.plot(0.02, 0.14, 'ko')
+        plt.text(0.03, 0.14, "$f_0$")
+        plt.plot(x,y)
+        plt.axvline(self.cutoff, color='k')
+        plt.xlim(0, 0.3)
+        plt.plot()
+        plt.title("Charakterystyka amplitudowa filtru Noch")
+        plt.xlabel('Częstotliwość [Hz]')
+        plt.ylabel('Wzmocnienie')
+        plt.grid()
+
+
     def __noch_filter(self, data, bandwidth):
         nyq = 0.5 * self.fs
+        self.bandwidth = bandwidth
         normal_cutoff = self.cutoff / nyq
         Q = normal_cutoff / bandwidth
         b, a = iirnotch(normal_cutoff, Q)
@@ -179,3 +276,73 @@ class Filtr:
             measures[i] = kalman_filter.get_latest_estimated_measurement()
 
         return measures
+
+    def __kalman_2(self, measures):
+        from pykalman import KalmanFilter
+        import numpy as np
+        import matplotlib.pyplot as plt
+
+        # Data description
+        #  Time
+        #  AccX_HP - high precision acceleration signal
+        #  AccX_LP - low precision acceleration signal
+        #  RefPosX - real position (ground truth)
+        #  RefVelX - real velocity (ground truth)
+
+        # switch between two acceleration signals
+        AccX_Variance = 0.0007
+
+        # time step
+        dt = 1 / self.fs
+
+        # transition_matrix
+        F = [1]
+
+        # observation_matrix
+        H = [1]
+
+        # transition_covariance
+        Q = [dt**2]
+
+        # observation_covariance
+        R = self.x_std_dev
+
+        # transition offset
+        B = [dt]
+
+        # initial_state_mean
+        X0 = [0]
+
+        # initial_state_covariance
+        P0 = [dt**2]
+
+        n_timesteps = np.array(measures).shape[0]
+        n_dim_state = 1
+        filtered_state_means = np.zeros((n_timesteps, n_dim_state))
+        filtered_state_covariances = np.zeros((n_timesteps, n_dim_state, n_dim_state))
+
+        kf = KalmanFilter(transition_matrices=F,
+                          observation_matrices=H,
+                          transition_covariance=Q,
+                          observation_covariance=R,
+                          initial_state_mean=X0,
+                          initial_state_covariance=P0,
+                          transition_offsets=B)
+
+        # iterative estimation for each new measurement
+        for t in range(n_timesteps):
+            if t == 0:
+                filtered_state_means[t] = X0
+                filtered_state_covariances[t] = P0
+            else:
+                filtered_state_means[t], filtered_state_covariances[t] = (
+                    kf.filter_update(
+                        filtered_state_means[t - 1],
+                        filtered_state_covariances[t - 1],
+                        measures[t]
+                    )
+                )
+
+        # Acc, Vel, Pos
+        return filtered_state_means[:, 0]
+
