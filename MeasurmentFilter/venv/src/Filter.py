@@ -31,7 +31,7 @@ class Filtr:
         self.velocity = []
         self.fs = 1 / 0.0032
         self.filterOrder = 4  # Order of Buttewroth filter.
-        self.cutoff = 16  # desired cutoff frequency of the filter, Hz
+        self.cutoff = 14  # desired cutoff frequency of the filter, Hz
         self.time_between_samples = 0.0032 #in seconds
         self.x_treshold = 0.1
         self.vel_tresh = 2.5
@@ -50,9 +50,9 @@ class Filtr:
             try:
                 if self.time_of_measure >= float(lines[i][3]):
                     self.time_measures.append((float(lines[i][3])))
-                    self.x_measures.append(int(lines[i][0]) / 40)
-                    self.y_measures.append(int(lines[i][1]) / 40)
-                    self.z_measures.append(int(lines[i][2]) / 200)
+                    self.x_measures.append(float(lines[i][0]) * 0.061)
+                    self.y_measures.append(float(lines[i][1]) * 0.061)
+                    self.z_measures.append(float(lines[i][2]) * 0.061)
 
                 else:
                     break
@@ -61,25 +61,25 @@ class Filtr:
 
     def filter_data(self):
         self.not_fil_z = copy.copy(self.z_measures)
+        self.not_fil_velocity = self.calculate_velocity()
         self.z_measures = self.__butter_lowpass_filter(self.z_measures)
         self.x_measures = self.__butter_lowpass_filter(self.x_measures)
         self.y_measures = self.__butter_lowpass_filter(self.y_measures)
         self.cutoff = 0.0001
         self.x_measures = self.__noch_filter(self.x_measures, 0.00015)
-        # self.calculate_velocity()
         self.x_std_dev = statistics.stdev(self.x_measures)
         # self.x_measures = self.__kalman_filter(self.x_measures, process_variance=1e-2)
-
-        self.velocity = self.__kalman_2(self.x_measures)
-        self.velocity = [x * 10 for x in self.velocity]
+        self.velocity = self.calculate_velocity()
+        # self.velocity = self.__kalman_2(self.x_measures)
+        # self.velocity = [x * 10 for x in self.velocity]
         # self.cutoff = 0.0001
         # self.y_measures = self.__noch_filter(self.y_measures, 0.00015)
         # self.y_measures = self.__kalman_filter(self.y_measures, process_variance=1e-2)
         # self.y_measures, _ = self.__kalman_2(self.y_measures)
 
     def calculate_velocity(self):
-        self.velocity = cumtrapz(self.x_measures, self.time_measures, initial=0)
-        self.velocity = [x * 5 for x in self.velocity]
+        return  cumtrapz(self.x_measures, self.time_measures, initial=0)
+        # self.velocity = [x * 5 for x in self.velocity]
 
     def gen_second_velocity(self, start, stop):
         ret_list = []
@@ -96,19 +96,19 @@ class Filtr:
         tmp = []
 
         # Pomiar nr 9
-        seconds = [0, 0, 0, 8, 21, 24, 28, 32, 39, 39, 40, 41, 44, 45, 45, 45, 45, 45, 45, 45, 46, 46, 46, 46, 47, 47, \
-                   47, 47, 47, 47, 47, 48, 47, 46, 45, 45, 45, 45, 43, 42, 40, 39, 34, 33, 32, 31, 33, 35, 34, 31, 28]
+        # seconds = [0, 0, 0, 8, 21, 24, 28, 32, 39, 39, 40, 41, 44, 45, 45, 45, 45, 45, 45, 45, 46, 46, 46, 46, 47, 47, \
+        #            47, 47, 47, 47, 47, 48, 47, 46, 45, 45, 45, 45, 43, 42, 40, 39, 34, 33, 32, 31, 33, 35, 34, 31, 28]
 
 
         #xses = np.arange(0, (15650 * (1 / self.fs)), (1 / self.fs))
 
-        # #  Pomiar nr 14 2 minuty 3 sekundy xses = np.arange(0, (38499 * (1 / self.fs)), (1 / self.fs))
-        # seconds = [0, 13, 26, 32, 34, 36, 40, 43, 44, 46, 45, 45, 45, 45, 45, 45, 45, 46, 47, \
-        #            46, 46, 46, 46, 46, 46, 46, 46, 46, 46, 46, 46, 46, 46, 46, 46, 46, 46, 46, \
-        #            46, 46, 46, 46, 44, 43, 43, 42, 42, 42, 42, 41, 41, 41, 41, 41, 41, 38, 37, 37, 34, 30, 27, \
-        #            24,  11, 5, 0, 0, 0, 0, 0, 4, 13, 17, 23, 30, 38, 31, 41, 43, 46, 47, 49, 50, \
-        #            51, 51, 50, 46, 37, 33, 21, 23, 11, 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, \
-        #            6,  10, 17,  18, 23, 26, 31, 33, 33, 33, 29, 26, 18, 11, 8,9,  14, 18, 23]
+        # Pomiar nr 14 2 minuty 3 sekundy xses = np.arange(0, (38499 * (1 / self.fs)), (1 / self.fs))
+        seconds = [0, 13, 26, 32, 34, 36, 40, 43, 44, 46, 45, 45, 45, 45, 45, 45, 45, 46, 47, \
+                   46, 46, 46, 46, 46, 46, 46, 46, 46, 46, 46, 46, 46, 46, 46, 46, 46, 46, 46, \
+                   46, 46, 46, 46, 44, 43, 43, 42, 42, 42, 42, 41, 41, 41, 41, 41, 41, 38, 37, 37, 34, 30, 27, \
+                   24,  11, 5, 0, 0, 0, 0, 0, 4, 13, 17, 23, 30, 38, 31, 41, 43, 46, 47, 49, 50, \
+                   51, 51, 50, 46, 37, 33, 21, 23, 11, 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, \
+                   6,  10, 17,  18, 23, 26, 31, 33, 33, 33, 29, 26, 18, 11, 8,9,  14, 18, 23]
 
         # Pomiar nr 7 xses = np.arange(0, (38499 * (1 / self.fs)), (1 / self.fs))
         # seconds = [0, 0, 8, 11, 19, 26, 31, 33, 34, 34, 35, 35, 35, 35, 34, 29, 28, \
@@ -123,8 +123,11 @@ class Filtr:
             tmp.append(self.gen_second_velocity(seconds[i], seconds[i + 1]))
         flatten = [item for sublist in tmp for item in sublist]
         print(flatten)
-        xses = np.arange(0, (15650 * (1 / self.fs)), (1 / self.fs))
-        plt.plot(xses[:len(flatten)], flatten)
+        xses = np.arange(0, (38499 * (1 / self.fs)), (1 / self.fs))
+
+        return xses[:len(flatten)], flatten
+
+
 
     def plot_result(self, string):
 
@@ -140,20 +143,42 @@ class Filtr:
             plt.plot(self.time_measures, self.y_measures)
             plt.ylabel('Filtered Y')
         if 'z' in string:
-            plt.figure(5)
-            plt.plot(self.time_measures, self.z_measures)
-            # plt.plot(self.time_measures, self.not_fil_z)
-            plt.title('Odczyty z osi Z akcelerometru')
-            plt.ylabel("Przyspieszenie [g]")
-            plt.xlabel("Czas [s]")
+            fig = plt.figure(5)
+            ax1 = plt.subplot(111)
+            ax1.plot(self.time_measures, self.z_measures)
+            ax1.title.set_text("Odczyty z osi Z")
+            ax1.set_ylabel("Przyspieszenie [mg]")
+            self.real_poles(self.z_measures, self.time_measures, ax1)
+            # Porownanie
+            # ax1 = plt.subplot(211)
+            # ax1.plot(self.time_measures, self.not_fil_z)
+            # ax1.title.set_text("Odczyty z osi Z przed filtracją")
+            # ax1.set_ylabel("Przyspieszenie [mg]")
+            # ax2 = plt.subplot(212, sharex=ax1)
+            # ax2.plot(self.time_measures, self.z_measures)
+            # ax2.title.set_text("Odczyty z osi Z po filtracji")
+            # ax2.set_xlabel("Czas [s]")
+            # ax2.set_ylabel("Przyspieszenie [mg]")
 
         if 'v' in string:
             plt.figure(6)
-            plt.plot(self.time_measures[:len(self.velocity)], self.velocity)
-            plt.ylabel('Zależność prędkości od czasu')
-            plt.ylabel("Prędkość [km/h]")
+
+            x, y = self.gen_real_velocity()
+            plt.plot(x, y)
+
+            ax1 = plt.subplot(211)
+            ax1.plot(self.time_measures[:len(self.velocity)], self.not_fil_velocity)
+            ax1.plot(x, y)
+            ax1.title.set_text("Uzyskana prędkość przed filtracją")
+            ax1.set_ylabel("Prędkość [km/h]")
+            ax2 = plt.subplot(212, sharex=ax1)
+            ax2.plot(self.time_measures[:len(self.velocity)], self.velocity)
+            ax2.plot(x, y)
+            ax2.title.set_text("Uzyskana prędkość po filtracją")
+            ax2.set_xlabel("Czas [s]")
+            ax2.set_ylabel("Prędkość [km/h]")
             plt.xlabel("Czas [s]")
-            self.gen_real_velocity()
+
             plt.legend(["Prędkość wyliczona", "Prędkość rzeczywista"])
         if 'filter' in string:
             self.__print_noch_char()
