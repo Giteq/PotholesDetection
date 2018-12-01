@@ -74,7 +74,7 @@ def init():
 
 def test(measure_no, real_poles, time_of_measure):
 
-    if measure_no == 10:
+    if measure_no == 12:
         measure = Measurment(getPath(measure_no), real_poles, time_of_measure)
         filter = Filtr(measure)
         poles_loc, _ = filter.find_poles()

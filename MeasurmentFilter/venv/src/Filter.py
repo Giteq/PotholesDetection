@@ -127,7 +127,18 @@ class Filtr:
 
         return xses[:len(flatten)], flatten
 
-
+    def plot_tresholds(self):
+        x = []
+        minuses = []
+        for i in range(len(self.all_tresholds)):
+            x.append(i*5)
+            x.append((i+1) * 5)
+            plt.plot(x, [self.all_tresholds[i], self.all_tresholds[i]], color='r')
+            minuses.append(-self.all_tresholds[i])
+            minuses.append(-self.all_tresholds[i])
+            plt.plot(x, minuses, color='r')
+            x = []
+            minuses = []
 
     def plot_result(self, string):
 
@@ -144,11 +155,10 @@ class Filtr:
             plt.ylabel('Filtered Y')
         if 'z' in string:
             fig = plt.figure(5)
-            ax1 = plt.subplot(111)
-            ax1.plot(self.time_measures, self.z_measures)
-            ax1.title.set_text("Odczyty z osi Z")
-            ax1.set_ylabel("Przyspieszenie [mg]")
-            self.real_poles(self.z_measures, self.time_measures, ax1)
+            plt.plot(self.time_measures, self.z_measures)
+            plt.title("Odczyty z osi Z")
+            plt.ylabel("Przyspieszenie [mg]")
+            self.plot_tresholds()
             # Porownanie
             # ax1 = plt.subplot(211)
             # ax1.plot(self.time_measures, self.not_fil_z)
@@ -208,13 +218,15 @@ class Filtr:
         std_dev = statistics.stdev(self.z_measures)
         m = 2.0
         poles_loc = set()
-        self.treshold = treshold = m * std_dev
+        self.all_tresholds = []
         num_of_probes_to_phole = 10
         found = 0
 
         for window_no in range(len(splited_z_measures)):
             std_dev = statistics.stdev(splited_z_measures[window_no])
             treshold = m * std_dev
+            self.all_tresholds.append(treshold)
+
             for i in range(len(splited_z_measures[window_no]) - num_of_probes_to_phole):
                 if abs(splited_z_measures[window_no][i]) > treshold and splited_velocity[window_no][i] > self.vel_tresh:
                     # and splited_y_measures[window_no][i] < self.y_tresh\
