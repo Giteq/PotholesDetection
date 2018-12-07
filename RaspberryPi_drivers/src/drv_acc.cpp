@@ -11,9 +11,9 @@
 #define ACC_IDENTIFICATOR 0xD7u
 
 /* Default L3DG20H acc is chosed. */
-#define L3GD20H_I2C_ADDR	0x6B
+#define L3GD20H_I2C_ADDR	0x1D
 
-
+#define GYRO_ADDR			0x6B
 
 Accelerometer::Accelerometer()
 {
@@ -33,17 +33,25 @@ Accelerometer::Accelerometer(int acc_type)
 		this->i2c_address = L3GD20H_I2C_ADDR;
 		this->fd = wiringPiI2CSetup(this->i2c_address);
 		this->write_reg(CTRL1, CTRL1_DEFAULT);
-		this->write_reg(CTRL5, CTRL5_DEFAULT);
-		this->write_reg(FIFO_CTRL, FIFO_CONTROL_DEFAULT);
+		this->write_reg(CTRL0, CTRL0_DEFAULT);
+		
+		//this->write_reg(CTRL5, CTRL5_DEFAULT);
+		//this->write_reg(FIFO_CTRL, FIFO_CONTROL_DEFAULT);
 	
-		this->turn_on();
+		//this->turn_on();
 	}
 	else
 	{
-		this->i2c_address = L3GD20H_I2C_ADDR;
+		this->i2c_address = GYRO_ADDR;
 		this->fd = wiringPiI2CSetup(this->i2c_address);
 		this->write_reg(FIFO_CTRL5, FIFO_CTRL5_DEFAULT);
 		this->write_reg(CTRL1_XL, CTRL1_XL_DEFAULT);
+		this->write_reg(CTRL1, CTRL1_GYRO_DEFAULT);
+		this->write_reg(CTRL0, CTRL0_DEFAULT);
+		this->write_reg(CTRL5, CTRL5_DEFAULT);
+		this->write_reg(FIFO_CTRL, FIFO_CONTROL_DEFAULT);
+		this->turn_on();
+		
 	}
 
 }

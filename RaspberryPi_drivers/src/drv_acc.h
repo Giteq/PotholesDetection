@@ -32,6 +32,8 @@ public:
 	 **/
 	enum ctrl_registers_default
 	{
+		CTRL1_GYRO_DEFAULT = 0b11101111,
+		CTRL0_DEFAULT = 0b01000000,
 		/* 800Hz, no Cut-off, normal mode, all axes enabled. */
 		CTRL1_DEFAULT =  0b11101111,
 		/* Not changed. */
@@ -75,6 +77,7 @@ public:
 	enum reg_addr
 	{
 		WHO_AM_I = 0x0Fu,
+		CTRL0 = 0xF1u,
 		CTRL1 = 0x20,		/* Register with output data rate select, axis enable, power mode, and bandwidth selection. */
 		CTRL2 = 0x21,
 		CTRL3 = 0x0,		/* Interrupt disabled. */
@@ -141,11 +144,7 @@ public:
 	 **/
 	void turn_off();
 	
-private:
-	int16_t fd;
-	uint8_t i2c_address;
-
-	/**
+		/**
 	 * Function writes value to the accelerometer's register.
 	 *
 	 * @param address			Register address.
@@ -164,6 +163,10 @@ private:
 	 * @return		 			Read value.
 	 **/
 	int read_reg(int address);
+	
+private:
+	int16_t fd;
+	uint8_t i2c_address;
 	
 	/**
 	 * Function turns on accelerometer.
