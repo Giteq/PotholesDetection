@@ -13,6 +13,8 @@
 /* Default L3DG20H acc is chosed. */
 #define L3GD20H_I2C_ADDR	0x1D
 
+#define LSM6DS33_I2C_ADDR	0x6Bu
+
 #define GYRO_ADDR			0x6B
 
 Accelerometer::Accelerometer()
@@ -28,6 +30,7 @@ Accelerometer::Accelerometer()
 
 Accelerometer::Accelerometer(int acc_type)
 {
+	this->acc_type = acc_type;
 	if (acc_type == 0)
 	{
 		this->i2c_address = L3GD20H_I2C_ADDR;
@@ -40,7 +43,8 @@ Accelerometer::Accelerometer(int acc_type)
 	
 		//this->turn_on();
 	}
-	else
+	//Gyro
+	else if (acc_type == 1)
 	{
 		this->i2c_address = GYRO_ADDR;
 		this->fd = wiringPiI2CSetup(this->i2c_address);
@@ -52,6 +56,20 @@ Accelerometer::Accelerometer(int acc_type)
 		this->write_reg(FIFO_CTRL, FIFO_CONTROL_DEFAULT);
 		this->turn_on();
 		
+	}
+	
+	else if (acc_type == 2)
+	{
+		this->i2c_address = LSM6DS33_I2C_ADDR;
+		this->fd = wiringPiI2CSetup(this->i2c_address);
+		this->write_reg(FIFO_CTRL5, FIFO_CTRL5_DEFAULT);
+		this->write_reg(CTRL1_XL, CTRL1_XL_DEFAULT);
+	}
+	else if (acc_type == 3)
+	{
+		this->i2c_address = LSM6DS33_I2C_ADDR;
+		this->fd = wiringPiI2CSetup(this->i2c_address);
+		this->write_reg(CTRL2_G, CTRL2_G_DEFAULT);
 	}
 
 }
@@ -70,15 +88,43 @@ Accelerometer::Accelerometer(uint8_t i2c_address)
 void Accelerometer::measure(int16_t *all_axis)
 {
 	unsigned int x, y, z;
-	x = (int8_t)this->read_reg(OUT_X_L);
-	x |= ((int16_t)this->read_reg(OUT_X_H) << 8u);
-	all_axis[0u] = x;
-	y = (int8_t)this->read_reg(OUT_Y_L);
-	y |= ((int16_t)this->read_reg(OUT_Y_H) << 8u);
-	all_axis[1u] = y;
-	z = (int8_t)this->read_reg(OUT_Z_L);
-	z |= ((int16_t)this->read_reg(OUT_Z_H) << 8u);
-	all_axis[2u] = z;
+	if (this->acc_type == 0 || this->acc_type == 1)
+	{
+		x = (int8_t)this->read_reg(OUT_X_L);
+		x |= ((int16_t)this->read_reg(OUT_X_H) << 8u);
+		all_axis[0u] = x;
+		y = (int8_t)this->read_reg(OUT_Y_L);
+		y |= ((int16_t)this->read_reg(OUT_Y_H) << 8u);
+		all_axis[1u] = y;
+		z = (int8_t)this->read_reg(OUT_Z_L);
+		z |= ((int16_t)this->read_reg(OUT_Z_H) << 8u);
+		all_axis[2u] = z;
+	}
+	else if (this->acc_type == 2)
+	{
+		x = (int8_t)this->read_reg(OUTX_L_XL);
+		x |= ((int16_t)this->read_reg(OUTX_H_XL) << 8u);
+		all_axis[0u] = x;
+		y = (int8_t)this->read_reg(OUTY_L_XL);
+		y |= ((int16_t)this->read_reg(OUTY_H_XL) << 8u);
+		all_axis[1u] = y;
+		z = (int8_t)this->read_reg(OUTZ_L_XL);
+		z |= ((int16_t)this->read_reg(OUTY_H_XL) << 8u);
+		all_axis[2u] = z;
+	}
+	else if (this->acc_type == 3)
+	{
+		x = (int8_t)this->read_reg(OUTX_L_G);
+		x |= ((int16_t)this->read_reg(OUTX_H_G) << 8u);
+		all_axis[0u] = x;
+		y = (int8_t)this->read_reg(OUTY_L_G);
+		y |= ((int16_t)this->read_reg(OUTY_H_G) << 8u);
+		all_axis[1u] = y;
+		z = (int8_t)this->read_reg(OUTZ_L_G);
+		z |= ((int16_t)this->read_reg(OUTY_H_G) << 8u);
+		all_axis[2u] = z;
+	}
+	
 	
 }
 

@@ -68,7 +68,8 @@ public:
 	enum ctrl_registers_default_2
 	{
 		FIFO_CTRL5_DEFAULT = 0b01010110,
-		CTRL1_XL_DEFAULT = 0b01010000
+		CTRL1_XL_DEFAULT = 0b01010000,
+		CTRL2_G_DEFAULT = 0b10000000
 	};
 	
 	/**
@@ -92,6 +93,22 @@ public:
 		OUT_Y_H = 0x2B,
 		OUT_Z_L = 0x2C,		/* Registers with z axis values. */
 		OUT_Z_H = 0x2D
+	};
+	
+	enum
+	{
+		OUTX_L_G = 0x22u,
+		OUTX_H_G = 0x23u,
+		OUTY_L_G = 0x24u,
+		OUTY_H_G = 0x25u,
+		OUTZ_L_G = 0x26u,
+		OUTZ_H_G = 0x27u,
+		OUTX_L_XL = 0x28u,
+		OUTX_H_XL = 0x29u,
+		OUTY_L_XL = 0x2Au,
+		OUTY_H_XL = 0x2Bu,
+		OUTZ_L_XL = 0x2Cu,
+		OUTZ_H_XL = 0x2Du
 	};
 	
 	/**
@@ -167,6 +184,7 @@ public:
 private:
 	int16_t fd;
 	uint8_t i2c_address;
+	int acc_type;
 	
 	/**
 	 * Function turns on accelerometer.

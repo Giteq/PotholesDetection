@@ -42,10 +42,10 @@ int main(void)
 	o_measure_number.close();
 	
 	int16_t measure_data[3u];
-	Accelerometer acc(0);
+	Accelerometer acc(2);
 	std::chrono::duration<double> time;
 	
-	Accelerometer gyro(1);
+	Accelerometer gyro(3);
 	
 	auto start = std::chrono::high_resolution_clock::now();
 	auto stop = std::chrono::high_resolution_clock::now();
@@ -59,7 +59,7 @@ int main(void)
 	wait_for_tcp_conn();
 	//system(RED_LED_ON);
 	
-	//std::cout << "Wartosc " << acc.read_reg(0x23) << std::endl;
+	//std::cout << "Wartosc " << gyro.read_reg(0x11) << std::endl;
 	
 	while (1)
 	{
