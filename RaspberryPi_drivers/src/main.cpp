@@ -11,7 +11,7 @@
 
 std::ofstream acc_file;;
 
-std::ofstream gyro_file;
+//std::ofstream gyro_file;
 
 std::string measunre_no_path = "/home/pi/Desktop/measurments/last_measure.txt";
 
@@ -33,7 +33,7 @@ int main(void)
 	gyro_output_name += ".txt";
 	
 	acc_file.open(acc_output_name, std::fstream::out | std::fstream::app);
-	gyro_file.open(gyro_output_name, std::fstream::out | std::fstream::app);
+	//gyro_file.open(gyro_output_name, std::fstream::out | std::fstream::app);
 	
 	measure_number.close();
 	o_measure_number.open(measunre_no_path, std::ofstream::out | std::ofstream::trunc);
@@ -42,17 +42,17 @@ int main(void)
 	o_measure_number.close();
 	
 	int16_t measure_data[3u];
-	Accelerometer acc(2);
+	Accelerometer acc(0);
 	std::chrono::duration<double> time;
 	
-	Accelerometer gyro(3);
+	//Accelerometer gyro(3);
 	
 	auto start = std::chrono::high_resolution_clock::now();
 	auto stop = std::chrono::high_resolution_clock::now();
 	
 	std::cout << " X\t\tY\t\tZ\t\tTime[us]" << std::endl;
 	acc_file << " X\t\tY\t\tZ\t\tTime[us]" << std::endl;
-	gyro_file << " X\t\tY\t\tZ\t\tTime[us]" << std::endl;
+	//gyro_file << " X\t\tY\t\tZ\t\tTime[us]" << std::endl;
 
 
 	//system(RED_LED_OFF);
@@ -76,19 +76,19 @@ int main(void)
 		acc_file << measure_data[2u] << "\t\t";
 		acc_file << time.count()  << "\n";
 	
-		gyro.measure(measure_data);
+		//gyro.measure(measure_data);
 		
-		gyro_file << measure_data[0u] << "\t\t";
-		gyro_file << measure_data[1u] << "\t\t";
-		gyro_file << measure_data[2u] << "\t\t";
-		gyro_file << time.count()  << "\n";
+		//gyro_file << measure_data[0u] << "\t\t";
+		//gyro_file << measure_data[1u] << "\t\t";
+		//gyro_file << measure_data[2u] << "\t\t";
+		//gyro_file << time.count()  << "\n";
 	
 		stop = std::chrono::high_resolution_clock::now();
 		time += stop - start;
 	}
 	
 	acc.turn_off();
-	gyro_file.close();
+	//gyro_file.close();
 	acc_file.close();
 	return 0;
 }
