@@ -12,32 +12,34 @@ import scipy.constants as constants
 from KalmanFilter import KalmanFilter
 import copy
 import scipy.signal as signal
-
-#http://newline.nadav.org/
-
-# '/usr/local/lib/python3.6/dist-packages/matplotlib/mpl-data/matplotlibrc' -> plik do zmiany domyślnej ścieżki do zapisywania wykresów
-
-#Liczenie G
-#http://ozzmaker.com/accelerometer-to-g/
+import json
 
 class Filtr:
-    def __init__(self, measurment):
+    def __init__(self, measurment, m, mx, probes_to_pole):
+
+        self.m = m
+        self.mx = mx
+        self.probes_to_pole = probes_to_pole
+        self.start = measurment.start
+        self.stop = measurment.stop
+        self.fs = 1 / 0.0061
+        self.filterOrder = 5
+        self.cutoff = 14
+
+        self.file = open(measurment.path_of_file, 'r')
         self.time_measures = []
         self.x_measures = []
         self.z_measures = []
         self.y_measures = []
-        self.file = open(measurment.path_of_file, 'r')
         self.not_filtr_z = []
         self.velocity = []
-        self.fs = 1 / 0.0032
-        self.filterOrder = 4  # Order of Buttewroth filter.
-        self.cutoff = 14  # desired cutoff frequency of the filter, Hz
-        self.time_between_samples = 0.0032 #in seconds
-        self.x_treshold = 0.1
-        self.vel_tresh = 2.5
-        self.y_tresh = 8
-        self.time_of_measure = measurment.time_of_measurment
+
         self.parse_file()
+        self.time_measures = [x - self.start for x in self.time_measures]
+
+        self.not_fil_x = copy.copy(self.x_measures)
+        self.not_fil_z = copy.copy(self.z_measures)
+        self.not_fil_velocity = self.calculate_velocity()
         self.filter_data()
 
     def parse_file(self):
@@ -46,200 +48,154 @@ class Filtr:
 
         for i in range(len(lines)):
             lines[i] = lines[i].split("\t\t")
-            #Filter empty strings in list
             try:
-                if self.time_of_measure >= float(lines[i][3]):
+                if self.start <= float(lines[i][3]) <= self.stop:
                     self.time_measures.append((float(lines[i][3])))
-                    self.x_measures.append(float(lines[i][0]) * 0.061)
+                    self.x_measures.append(float(lines[i][0]) * 0.061 * constants.g / 1000)
                     self.y_measures.append(float(lines[i][1]) * 0.061)
                     self.z_measures.append(float(lines[i][2]) * 0.061)
 
-                else:
+                elif float(lines[i][3]) > self.stop:
                     break
             except ValueError:
                 print("")
+            except IndexError:
+                pass
+
+    def remove_g(self):
+        mean = np.mean(self.z_measures)
+        self.z_measures = [x - mean for x in self.z_measures]
+        mean = np.mean(self.x_measures)
+        self.x_measures = [x - mean for x in self.x_measures]
 
     def filter_data(self):
-        self.not_fil_z = copy.copy(self.z_measures)
-        self.not_fil_velocity = self.calculate_velocity()
         self.z_measures = self.__butter_lowpass_filter(self.z_measures)
         self.x_measures = self.__butter_lowpass_filter(self.x_measures)
-        self.y_measures = self.__butter_lowpass_filter(self.y_measures)
         self.cutoff = 0.0001
         self.x_measures = self.__noch_filter(self.x_measures, 0.00015)
-        self.x_std_dev = statistics.stdev(self.x_measures)
-        # self.x_measures = self.__kalman_filter(self.x_measures, process_variance=1e-2)
+        self.remove_g()
         self.velocity = self.calculate_velocity()
-        # self.velocity = self.__kalman_2(self.x_measures)
-        # self.velocity = [x * 10 for x in self.velocity]
-        # self.cutoff = 0.0001
-        # self.y_measures = self.__noch_filter(self.y_measures, 0.00015)
-        # self.y_measures = self.__kalman_filter(self.y_measures, process_variance=1e-2)
-        # self.y_measures, _ = self.__kalman_2(self.y_measures)
 
     def calculate_velocity(self):
-        return  cumtrapz(self.x_measures, self.time_measures, initial=0)
-        # self.velocity = [x * 5 for x in self.velocity]
-
-    def gen_second_velocity(self, start, stop):
-        ret_list = []
-        tmp2 = start
-        tmp = 0
-        while tmp < 1:
-            tmp += (1 / self.fs)
-            tmp2 += (stop - start) * (1 / self.fs)
-            ret_list.append(tmp2)
-
-        return ret_list
+        buff = cumtrapz(self.not_fil_x, self.time_measures, initial=0)
+        buff = [x * 3.6 for x in buff]  # Convert to km/h
+        self.not_fil_velocity = buff
+        buff = cumtrapz(self.x_measures, self.time_measures, initial=0)
+        buff = [x * 3.6 for x in buff]  # Convert to km/h
+        return buff
 
     def gen_real_velocity(self):
-        tmp = []
-
-        # Pomiar nr 9
-        # seconds = [0, 0, 0, 8, 21, 24, 28, 32, 39, 39, 40, 41, 44, 45, 45, 45, 45, 45, 45, 45, 46, 46, 46, 46, 47, 47, \
-        #            47, 47, 47, 47, 47, 48, 47, 46, 45, 45, 45, 45, 43, 42, 40, 39, 34, 33, 32, 31, 33, 35, 34, 31, 28]
-
-
-        #xses = np.arange(0, (15650 * (1 / self.fs)), (1 / self.fs))
-
-        # Pomiar nr 14 2 minuty 3 sekundy xses = np.arange(0, (38499 * (1 / self.fs)), (1 / self.fs))
-        seconds = [0, 13, 26, 32, 34, 36, 40, 43, 44, 46, 45, 45, 45, 45, 45, 45, 45, 46, 47, \
-                   46, 46, 46, 46, 46, 46, 46, 46, 46, 46, 46, 46, 46, 46, 46, 46, 46, 46, 46, \
-                   46, 46, 46, 46, 44, 43, 43, 42, 42, 42, 42, 41, 41, 41, 41, 41, 41, 38, 37, 37, 34, 30, 27, \
-                   24,  11, 5, 0, 0, 0, 0, 0, 4, 13, 17, 23, 30, 38, 31, 41, 43, 46, 47, 49, 50, \
-                   51, 51, 50, 46, 37, 33, 21, 23, 11, 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, \
-                   6,  10, 17,  18, 23, 26, 31, 33, 33, 33, 29, 26, 18, 11, 8,9,  14, 18, 23]
-
-        # Pomiar nr 7 xses = np.arange(0, (38499 * (1 / self.fs)), (1 / self.fs))
-        # seconds = [0, 0, 8, 11, 19, 26, 31, 33, 34, 34, 35, 35, 35, 35, 34, 29, 28, \
-        #            26, 25, 25, 25, 26, 25, 24, 27, 29, 30, 32, 32, 33, 34, 34, 34, \
-        #            33, 35, 36, 36, 36, 37, 37,37, 38, 38, 38, 37, 37, 37, 37, 38, 39, \
-        #            40, 40, 39, 38, 38, 38, 38, 38, 39, 40, 41, 42, 42, 42, 42, 42, \
-        #            42, 43, 44, 44, 44, 44, 45, 45, 45, 45, 45, 44, 43, 41, 38, 35, \
-        #            31, 30, 27, 25, 26, 25, 24, 24, 25, 26, 27, 27, 27, 27, 26, 25, 23,
-        #             21, 12]
-
-        for i in range(len(seconds) - 1):
-            tmp.append(self.gen_second_velocity(seconds[i], seconds[i + 1]))
-        flatten = [item for sublist in tmp for item in sublist]
-        print(flatten)
-        xses = np.arange(0, (38499 * (1 / self.fs)), (1 / self.fs))
-
-        return xses[:len(flatten)], flatten
-
-    def plot_tresholds(self):
         x = []
-        minuses = []
-        for i in range(len(self.all_tresholds)):
-            x.append(i*5)
-            x.append((i+1) * 5)
-            plt.plot(x, [self.all_tresholds[i], self.all_tresholds[i]], color='r')
-            minuses.append(-self.all_tresholds[i])
-            minuses.append(-self.all_tresholds[i])
-            plt.plot(x, minuses, color='r')
-            x = []
-            minuses = []
+        y = []
+        with open('../real_velocity.json') as json_file:
+            data = json.load(json_file)
 
-    def plot_result(self, string):
+            for elem in data:
+                for i in range(len(elem["velocity"])):
+                    x.append(i)
+                    y.append(elem["velocity"][i])
 
+        return x, y
+
+    def plot_axis(self, string):
         if 'x' in string:
-            plt.figure(1)
-            # plt.subplot(3, 1, 1)
+            plt.figure(2)
             plt.plot(self.time_measures, self.x_measures)
-            # plt.gcf().autofmt_xdate()
-            plt.ylabel('Not filtered X')
+            plt.title("X")
+            plt.xlabel("Czas [s]")
+            plt.ylabel("Przyspieszenie [mg]")
+            plt.axhline(self.x_treshold)
 
         if 'y' in string:
             plt.figure(2)
             plt.plot(self.time_measures, self.y_measures)
-            plt.ylabel('Filtered Y')
-        if 'z' in string:
-            fig = plt.figure(5)
-            plt.plot(self.time_measures, self.z_measures)
-            plt.title("Odczyty z osi Z")
+            plt.title("Y")
+            plt.xlabel("Czas [s]")
             plt.ylabel("Przyspieszenie [mg]")
-            self.plot_tresholds()
-            # Porownanie
-            # ax1 = plt.subplot(211)
-            # ax1.plot(self.time_measures, self.not_fil_z)
-            # ax1.title.set_text("Odczyty z osi Z przed filtracją")
-            # ax1.set_ylabel("Przyspieszenie [mg]")
-            # ax2 = plt.subplot(212, sharex=ax1)
-            # ax2.plot(self.time_measures, self.z_measures)
-            # ax2.title.set_text("Odczyty z osi Z po filtracji")
-            # ax2.set_xlabel("Czas [s]")
-            # ax2.set_ylabel("Przyspieszenie [mg]")
-
+        if 'z' in string:
+            plt.figure(7)
+            plt.plot(self.time_measures, self.z_measures)
+            plt.title("Z")
+            plt.xlabel("Czas [s]")
+            plt.ylabel("Przyspieszenie [mg]")
         if 'v' in string:
             plt.figure(6)
-
+            plt.title("V")
             x, y = self.gen_real_velocity()
             plt.plot(x, y)
-
-            ax1 = plt.subplot(211)
-            ax1.plot(self.time_measures[:len(self.velocity)], self.not_fil_velocity)
-            ax1.plot(x, y)
-            ax1.title.set_text("Uzyskana prędkość przed filtracją")
-            ax1.set_ylabel("Prędkość [km/h]")
-            ax2 = plt.subplot(212, sharex=ax1)
-            ax2.plot(self.time_measures[:len(self.velocity)], self.velocity)
-            ax2.plot(x, y)
-            ax2.title.set_text("Uzyskana prędkość po filtracją")
-            ax2.set_xlabel("Czas [s]")
-            ax2.set_ylabel("Prędkość [km/h]")
+            plt.figure(7)
+            plt.plot(self.time_measures[:len(self.velocity)], self.velocity)
+            plt.plot(x, y)
+            plt.xlabel("Czas [s]")
+            plt.ylabel("Prędkość [km/h]")
             plt.xlabel("Czas [s]")
 
             plt.legend(["Prędkość wyliczona", "Prędkość rzeczywista"])
-        if 'filter' in string:
-            self.__print_noch_char()
+
         plt.show()
 
-    def split_mesures(self, measures, time_measures, time_window):
-        splied_measures = [[]]
-        num_of_splited = 0
-        for i in range(len(measures)):
-            if time_measures[i] < time_window * (num_of_splited + 1):
-                splied_measures[num_of_splited].append(measures[i])
-            else:
-                num_of_splited += 1
-                splied_measures.append([])
-                splied_measures[num_of_splited].append(measures[i])
+    def plot_result(self, trues, false_negatives, false_positives):
+        plt.figure(6)
+        plt.plot(self.time_measures, self.z_measures)
+        plt.axhline(self.global_treshold,color='black', label='treshold')
+        plt.axhline(-self.global_treshold, color='black', label='treshold')
+        plt.ylabel("Przyspieszenie [mg]")
+        plt.xlabel("Czas [s]")
 
-        return splied_measures
+        plt.figure(7)
+        plt.plot(self.time_measures, self.x_measures)
+        plt.axhline(self.x_treshold, color='black', label='treshold')
+        plt.ylabel("Przyspieszenie [mg]")
+        plt.xlabel("Czas [s]")
+
+        plt.figure(8)
+        for i in range(len(trues)):
+            if i != len(trues) - 1:
+                plt.plot([trues[i], trues[i]], [0, 1], color='green')
+            else:
+                plt.plot([trues[i], trues[i]], [0, 1], color='green', label="Wykryta nierówność")
+        for i in range(len(false_negatives)):
+            if i != len(false_negatives) - 1:
+                plt.plot([false_negatives[i], false_negatives[i]], [0, 1], color='orange')
+            else:
+                plt.plot([false_negatives[i], false_negatives[i]], [0, 1], color='orange', label="Niewykryta nierówność")
+        for i in range(len(false_positives)):
+            if i != len(false_positives) - 1:
+                plt.plot([false_positives[i], false_positives[i]], [0, 1], color='red')
+            else:
+                plt.plot([false_positives[i], false_positives[i]], [0, 1], color='red', label="Fałszywa nierówność")
+
+        plt.ymax = 1
+        plt.ylabel("Zdarzenia")
+        plt.xlabel("Czas [s]")
+        plt.legend(loc="best")
+        plt.show()
 
     def find_poles(self):
 
         time_window = 5
-
-        splited_z_measures = self.split_mesures(self.z_measures, self.time_measures, time_window)
-        splited_y_measures = self.split_mesures(self.y_measures, self.time_measures, time_window)
-        splited_velocity = self.split_mesures(self.velocity, self.time_measures, time_window)
-        splited_time_measures = self.split_mesures(self.time_measures, self.time_measures, time_window)
-        std_dev = statistics.stdev(self.z_measures)
-        m = 2.0
+        self.time_window = time_window
         poles_loc = set()
         self.all_tresholds = []
-        num_of_probes_to_phole = 10
+        num_of_probes_to_phole = self.probes_to_pole
         found = 0
+        self.global_treshold = self.m * statistics.stdev(self.z_measures)
+        self.x_treshold = - self.mx * statistics.stdev(self.x_measures)
 
-        for window_no in range(len(splited_z_measures)):
-            std_dev = statistics.stdev(splited_z_measures[window_no])
-            treshold = m * std_dev
-            self.all_tresholds.append(treshold)
-
-            for i in range(len(splited_z_measures[window_no]) - num_of_probes_to_phole):
-                if abs(splited_z_measures[window_no][i]) > treshold and splited_velocity[window_no][i] > self.vel_tresh:
-                    # and splited_y_measures[window_no][i] < self.y_tresh\
-                    found += 1
-                if found == num_of_probes_to_phole:
-                    poles_loc.add(round(splited_time_measures[window_no][i]))
-                    found = 0
-        return poles_loc, treshold
+        for i in range(len(self.z_measures)):
+            if abs(self.z_measures[i]) > self.global_treshold:
+                found += 1
+            if found == num_of_probes_to_phole:
+                if i - (self.fs) > 0 and  i + (self.fs) < len(self.x_measures):
+                    for j in range(i - (int(self.fs)), i + (int(self.fs))):
+                        if self.x_measures[j] < self.x_treshold:
+                            poles_loc.add(round(self.time_measures[i]))
+                found = 0
+        return poles_loc
 
     def __butter_lowpass_filter(self, data):
         nyq = 0.5 * self.fs
         normal_cutoff = (self.cutoff / nyq)
-        print(normal_cutoff)
         b, a = butter(self.filterOrder, normal_cutoff, btype='lowpass', analog=False)
         self.b = b
         self.a = a
@@ -248,16 +204,14 @@ class Filtr:
 
     def __butter_highpass_filter(self, data):
         nyq = 0.5 * self.fs
-        normal_cutoff =  self.cutoff / nyq
+        normal_cutoff = self.cutoff / nyq
         b, a = butter(self.filterOrder, normal_cutoff, btype='highpass', analog=False)
         y = lfilter(b, a, data)
         return y
 
-    def __print_butter_char(self):
-        self.cutoff = 16
+    def print_butter_char(self):
         nyq = 0.5 * self.fs
         normal_cutoff = (self.cutoff / nyq)
-        print(normal_cutoff)
         b, a = butter(self.filterOrder, normal_cutoff, btype='lowpass', analog=False)
         # Plot the frequency response.
         w, h = freqz(b, a, worN=8000)
@@ -265,34 +219,36 @@ class Filtr:
         plt.plot(self.cutoff, 0.5 * np.sqrt(2), 'ko')
         plt.axvline(self.cutoff, color='k')
         plt.xlim(0, 0.5 * self.fs)
-        plt.title("Charakterystyka amplitudowa dolnoprzepustowego filtru Butterwortha")
         plt.xlabel('Częstotliwość [Hz]')
         plt.ylabel('Wzmocnienie')
         plt.grid()
 
+        plt.show()
+
     def __print_noch_char(self):
+        self.cutoff = 0.0001
+        self.bandwidth = 0.00015
         nyq = 0.5 * self.fs
         normal_cutoff = self.cutoff / nyq
         Q = normal_cutoff / self.bandwidth
         b, a = iirnotch(normal_cutoff, Q)
-        w, h = freqz(b, a, worN=8000)
-        h = [abs(x) if abs(x) > 0.9 else abs(x) - 0.5 for x in h]
+        w, h = freqz(b, a, worN=19000)
         plt.plot(0.5 * self.fs * w / np.pi, np.abs(h), 'b')
 
-        x = [0.00582,  0.051]
+        x = [0.0025,  0.0125]
         y = [0.5 * np.sqrt(2), 0.5 * np.sqrt(2)]
-        plt.text(np.average(x) - 0.015, y[0] + 0.01, "$\Delta f$")
-        plt.plot(0.02, 0.14, 'ko')
-        plt.text(0.03, 0.14, "$f_0$")
+        plt.text(0.0015, y[0] + 0.03, "$\Delta \omega$")
+        plt.plot(0.0040, 0.34, 'ko')
+        plt.text(0.0060, 0.34, "$\omega_0$")
         plt.plot(x,y)
         plt.axvline(self.cutoff, color='k')
         plt.xlim(0, 0.3)
         plt.plot()
-        plt.title("Charakterystyka amplitudowa filtru Noch")
         plt.xlabel('Częstotliwość [Hz]')
         plt.ylabel('Wzmocnienie')
         plt.grid()
 
+        plt.show()
 
     def __noch_filter(self, data, bandwidth):
         nyq = 0.5 * self.fs
@@ -318,7 +274,7 @@ class Filtr:
         from pykalman import KalmanFilter
         import numpy as np
         import matplotlib.pyplot as plt
-
+        self.x_std_dev = statistics.stdev(self.x_measures)
         # Data description
         #  Time
         #  AccX_HP - high precision acceleration signal
