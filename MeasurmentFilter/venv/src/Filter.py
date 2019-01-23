@@ -1,18 +1,13 @@
-import numbers
 import matplotlib.pyplot as plt
-from scipy.signal import butter, lfilter, freqz, iirnotch
-from datetime import datetime, timedelta
-import statistics
-import matplotlib.dates as dates
-from datetime import datetime
 import numpy as np
-import math
+import copy
+import json
 from scipy.integrate import cumtrapz
+import scipy.signal as signal
 import scipy.constants as constants
 from KalmanFilter import KalmanFilter
-import copy
-import scipy.signal as signal
-import json
+from scipy.signal import butter, lfilter, freqz, iirnotch
+from matplotlib import animation
 
 class Filtr:
     def __init__(self, measurment, m, mx, probes_to_pole):
@@ -134,43 +129,6 @@ class Filtr:
 
         plt.show()
 
-    def plot_result(self, trues, false_negatives, false_positives):
-        plt.figure(6)
-        plt.plot(self.time_measures, self.z_measures)
-        plt.axhline(self.global_treshold,color='black', label='treshold')
-        plt.axhline(-self.global_treshold, color='black', label='treshold')
-        plt.ylabel("Przyspieszenie [mg]")
-        plt.xlabel("Czas [s]")
-
-        plt.figure(7)
-        plt.plot(self.time_measures, self.x_measures)
-        plt.axhline(self.x_treshold, color='black', label='treshold')
-        plt.ylabel("Przyspieszenie [mg]")
-        plt.xlabel("Czas [s]")
-
-        plt.figure(8)
-        for i in range(len(trues)):
-            if i != len(trues) - 1:
-                plt.plot([trues[i], trues[i]], [0, 1], color='green')
-            else:
-                plt.plot([trues[i], trues[i]], [0, 1], color='green', label="Wykryta nierówność")
-        for i in range(len(false_negatives)):
-            if i != len(false_negatives) - 1:
-                plt.plot([false_negatives[i], false_negatives[i]], [0, 1], color='orange')
-            else:
-                plt.plot([false_negatives[i], false_negatives[i]], [0, 1], color='orange', label="Niewykryta nierówność")
-        for i in range(len(false_positives)):
-            if i != len(false_positives) - 1:
-                plt.plot([false_positives[i], false_positives[i]], [0, 1], color='red')
-            else:
-                plt.plot([false_positives[i], false_positives[i]], [0, 1], color='red', label="Fałszywa nierówność")
-
-        plt.ymax = 1
-        plt.ylabel("Zdarzenia")
-        plt.xlabel("Czas [s]")
-        plt.legend(loc="best")
-        plt.show()
-
     def find_poles(self):
 
         time_window = 5
@@ -179,8 +137,8 @@ class Filtr:
         self.all_tresholds = []
         num_of_probes_to_phole = self.probes_to_pole
         found = 0
-        self.global_treshold = self.m * statistics.stdev(self.z_measures)
-        self.x_treshold = - self.mx * statistics.stdev(self.x_measures)
+        self.global_treshold = self.m * np.std(self.z_measures)
+        self.x_treshold = - self.mx * np.std(self.x_measures)
 
         for i in range(len(self.z_measures)):
             if abs(self.z_measures[i]) > self.global_treshold:
@@ -260,7 +218,7 @@ class Filtr:
         return y
 
     def __kalman_filter(self, measures, process_variance):
-        measurement_standard_deviation = statistics.stdev(measures)
+        measurement_standard_deviation = np.std(measures)
         estimated_measurement_variance = measurement_standard_deviation ** 2
         kalman_filter = KalmanFilter(process_variance, estimated_measurement_variance)
 
@@ -270,72 +228,4 @@ class Filtr:
 
         return measures
 
-    def __kalman_2(self, measures):
-        from pykalman import KalmanFilter
-        import numpy as np
-        import matplotlib.pyplot as plt
-        self.x_std_dev = statistics.stdev(self.x_measures)
-        # Data description
-        #  Time
-        #  AccX_HP - high precision acceleration signal
-        #  AccX_LP - low precision acceleration signal
-        #  RefPosX - real position (ground truth)
-        #  RefVelX - real velocity (ground truth)
-
-        # switch between two acceleration signals
-        AccX_Variance = 0.0007
-
-        # time step
-        dt = 1 / self.fs
-
-        # transition_matrix
-        F = [1]
-
-        # observation_matrix
-        H = [1]
-
-        # transition_covariance
-        Q = [dt**2]
-
-        # observation_covariance
-        R = self.x_std_dev
-
-        # transition offset
-        B = [dt]
-
-        # initial_state_mean
-        X0 = [0]
-
-        # initial_state_covariance
-        P0 = [dt**2]
-
-        n_timesteps = np.array(measures).shape[0]
-        n_dim_state = 1
-        filtered_state_means = np.zeros((n_timesteps, n_dim_state))
-        filtered_state_covariances = np.zeros((n_timesteps, n_dim_state, n_dim_state))
-
-        kf = KalmanFilter(transition_matrices=F,
-                          observation_matrices=H,
-                          transition_covariance=Q,
-                          observation_covariance=R,
-                          initial_state_mean=X0,
-                          initial_state_covariance=P0,
-                          transition_offsets=B)
-
-        # iterative estimation for each new measurement
-        for t in range(n_timesteps):
-            if t == 0:
-                filtered_state_means[t] = X0
-                filtered_state_covariances[t] = P0
-            else:
-                filtered_state_means[t], filtered_state_covariances[t] = (
-                    kf.filter_update(
-                        filtered_state_means[t - 1],
-                        filtered_state_covariances[t - 1],
-                        measures[t]
-                    )
-                )
-
-        # Acc, Vel, Pos
-        return filtered_state_means[:, 0]
 

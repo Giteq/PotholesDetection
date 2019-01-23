@@ -3,6 +3,11 @@ from Measurment import Measurment
 import numpy as np
 import matplotlib.pyplot as plt
 import json
+import os
+import threading
+import cv2
+
+output_filename = "../result.json"
 
 best_mx = 2.2
 best_mz = 1.8
@@ -48,7 +53,7 @@ def check_result(real_poles, detected_poles, measure_time):
     print(f'False positives {sorted(list(false_positives))}')
     print(f'True negatives {sorted(list(true_negative))}')
 
-    return len(true_positive), len(true_negative), len(false_positives), len(false_negatives), len(real_poles)
+    return true_positive, true_negative, false_positives, false_negatives, real_poles, measure_time
 
 
 def init_acc():
@@ -78,10 +83,10 @@ def find_precesion(m, mx, width):
         poles_loc = filter.find_poles()
         true_pos, true_neg, false_pos, false_neg, real_poles = check_result(measure.poles, poles_loc,
                                                                 (measure.stop - measure.start))
-        gl_false_pos += false_pos
-        gl_false_neg += false_neg
-        gl_true_pos += true_pos
-        gl_true_neg += true_neg
+        gl_false_pos += len(false_pos)
+        gl_false_neg += len(false_neg)
+        gl_true_pos += len(true_pos)
+        gl_true_neg += len(true_neg)
 
     accuracy = 100 * (gl_true_pos) / (gl_true_pos + gl_false_pos + gl_false_neg)
 
@@ -92,11 +97,33 @@ def find_precesion(m, mx, width):
     print(f'Full time {full_measures_time }')
     print(f'Accuracy: {accuracy}')
 
-    return gl_false_neg, gl_false_pos, gl_true_neg, gl_true_pos, accuracy
+    result = {}
+    result["Accuracy"] = accuracy
+    result["True negatives"] = gl_true_neg
+    result["True positives"] = gl_true_pos
+    result["False negatives"] = gl_false_neg
+    result["False positives"] = gl_false_pos
 
+    return result
+
+def play_moves(measure_number):
+    cap = cv2.VideoCapture(f"/home/patryk/Desktop/movies_gyro_acc/{measure_number}.mp4")
+
+    while (cap.isOpened()):
+        ret, frame = cap.read()
+
+        if ret:
+            cv2.imshow('frame', frame)
+            if cv2.waitKey(25) & 0xFF == ord('q'):
+                break
+
+    cap.release()
+    cv2.destroyAllWindows()
 
 def best_accuracy():
-    find_precesion(best_mx, best_mz, best_time_window)
+    result = find_precesion(best_mx, best_mz, best_time_window)
+    with open(output_filename, 'w+') as f:
+        json.dump(result, f)
 
 
 def okno_czasowe_charakterystyka():
@@ -130,8 +157,6 @@ def okno_czasowe_charakterystyka():
     plt.title("Zależność ilości niewykrytych nierówności od szerokości okna czasowego")
     plt.xlabel("Szerokość okna czasowego")
     plt.plot(zakres, all_false_negatices)
-
-
 
     plt.show()
 
@@ -168,7 +193,63 @@ def m_charakterystyka():
     plt.plot(zakres, all_false_negatices)
     plt.show()
 
+
+def analyze_measure(measure_number):
+    acc_measurments, full_measures_time = init_acc()
+    measure = acc_measurments[measure_number - 1]
+    print("\n")
+    print(f'Measure number {measure.number}')
+    print(f'm = {best_mz}')
+    print(f'width = {best_time_window}')
+    filter = Filtr(measure, best_mz, best_mx, best_time_window)
+    poles_loc = filter.find_poles()
+    true_pos, true_neg, false_pos, false_neg, real_poles, measure_time = check_result(measure.poles, poles_loc,
+                                                            (measure.stop - measure.start))
+    plot_result(measure_number, measure_time)
+    return result
+
+
+def plot_result(measure_no, measure_time):
+    trues = [12, 14, 15, 17]
+    false_neg = [16]
+    false_pos = [10]
+
+    plt.figure(6)
+    plt.xlim([0, max(trues) + 4])
+    plt.clf()
+    plt.ymax = 1
+    plt.ylabel("Zdarzenia")
+    plt.xlabel("Czas [s]")
+    plt.legend(loc="best")
+
+    for i in range(int(measure_time)):
+        if i in trues:
+            plt.plot([i, i], [0, 1], color='b')
+        elif i in false_neg:
+            plt.plot([i, i], [0, 1], color='r')
+        elif i in false_pos:
+            plt.plot([i, i], [0, 1], color='y')
+
+        plt.plot([i - 1, i], [0, 0], color='b')
+        plt.pause(1)
+
 if __name__ == "__main__":
-    best_accuracy()
+    plot_thread = threading.Thread(target=analyze_measure, args=(2,))
+    plot_thread.start()
+    # move_thread.start()
     # okno_czasowe_charakterystyka()
     # m_charakterystyka()
+    cap = cv2.VideoCapture(f"/home/patryk/Desktop/movies_gyro_acc/2.mp4")
+
+    while (cap.isOpened()):
+        ret, frame = cap.read()
+        frame = cv2.transpose(frame);
+        if ret:
+            cv2.imshow('frame', frame)
+            if cv2.waitKey(25) & 0xFF == ord('q'):
+                break
+        else:
+            break
+    cap.release()
+    cv2.destroyAllWindows()
+

@@ -3,10 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="781b506c-46f4-45b7-93b5-f57602937e3c" name="Default" comment="Added time window, labeling measures, finding numbers of correct and wrong potholes.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/real_potholes.json" beforeDir="false" afterPath="$PROJECT_DIR$/venv/real_potholes.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/venv/src/Filter.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/src/Filter.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/src/Measurment.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/src/Measurment.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/venv/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/src/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../RaspberryPi_drivers/Measurments/1.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../RaspberryPi_drivers/Measurments/1.txt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -20,11 +19,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/venv/src/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="83" column="31" selection-start-line="83" selection-start-column="31" selection-end-line="83" selection-end-column="31" />
+            <state relative-caret-position="339">
+              <caret line="229" column="28" lean-forward="true" selection-start-line="229" selection-start-column="28" selection-end-line="229" selection-end-column="28" />
               <folding>
                 <element signature="e#0#24#0" expanded="true" />
               </folding>
@@ -33,10 +32,19 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/.PyCharmCE2018.3/system/python_stubs/-1247971763/cv2/__init__.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="205">
+              <caret line="3435" column="8" lean-forward="true" selection-start-line="3435" selection-start-column="8" selection-end-line="3435" selection-end-column="8" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/venv/real_potholes.json">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="30">
-              <caret line="2" column="15" selection-start-line="2" selection-start-column="15" selection-end-line="2" selection-end-column="15" />
+              <caret line="2" column="147" lean-forward="true" selection-start-line="2" selection-start-column="147" selection-end-line="2" selection-end-column="147" />
             </state>
           </provider>
         </entry>
@@ -45,7 +53,7 @@
         <entry file="file://$PROJECT_DIR$/venv/real_velocity.json">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="45">
-              <caret line="3" column="113" lean-forward="true" selection-start-line="3" selection-start-column="113" selection-end-line="3" selection-end-column="113" />
+              <caret line="3" column="113" selection-start-line="3" selection-start-column="113" selection-end-line="3" selection-end-column="113" />
             </state>
           </provider>
         </entry>
@@ -59,13 +67,13 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/venv/src/Filter.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3375">
-              <caret line="225" column="18" lean-forward="true" selection-start-line="225" selection-start-column="18" selection-end-line="225" selection-end-column="18" />
+            <state relative-caret-position="165">
+              <caret line="90" column="44" selection-start-line="90" selection-start-column="44" selection-end-line="90" selection-end-column="44" />
               <folding>
-                <element signature="e#0#14#0" expanded="true" />
+                <element signature="e#0#31#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -82,9 +90,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>butt</find>
-      <find>__butter_lowpass_filter</find>
-      <find>cutoff</find>
       <find>x_measures</find>
       <find>calculate_velocity</find>
       <find>plt.show</find>
@@ -109,6 +114,12 @@
       <find>fill_labelator</find>
       <find>__print_noch_char</find>
       <find>print_noch_char</find>
+      <find>statistics</find>
+      <find>numbers</find>
+      <find>flipCode</find>
+      <find>plot_result</find>
+      <find>check_result</find>
+      <find>self</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -123,10 +134,10 @@
         <option value="$PROJECT_DIR$/venv/src/Filter1.py" />
         <option value="$PROJECT_DIR$/venv/src/Labelator.py" />
         <option value="$PROJECT_DIR$/venv/src/Measurment.py" />
-        <option value="$PROJECT_DIR$/venv/real_potholes.json" />
         <option value="$PROJECT_DIR$/venv/real_velocity.json" />
-        <option value="$PROJECT_DIR$/venv/src/main.py" />
+        <option value="$PROJECT_DIR$/venv/real_potholes.json" />
         <option value="$PROJECT_DIR$/venv/src/Filter.py" />
+        <option value="$PROJECT_DIR$/venv/src/main.py" />
       </list>
     </option>
   </component>
@@ -136,7 +147,7 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="67" />
     <option name="y" value="27" />
     <option name="width" value="971" />
@@ -316,7 +327,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="67" y="25" width="1853" height="1055" extended-state="7" />
+    <frame x="67" y="25" width="1853" height="1055" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15300547" />
@@ -324,7 +335,7 @@
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32963374" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.43715847" visible="true" weight="0.3263041" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.43715847" weight="0.3263041" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.46885246" weight="0.3962264" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -355,14 +366,14 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/venv/src/Filter.py</url>
-          <line>46</line>
-          <option name="timeStamp" value="56" />
+          <url>file://$PROJECT_DIR$/venv/src/main.py</url>
+          <line>252</line>
+          <option name="timeStamp" value="60" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/venv/src/Filter.py</url>
-          <line>199</line>
-          <option name="timeStamp" value="57" />
+          <url>file://$PROJECT_DIR$/venv/src/main.py</url>
+          <line>198</line>
+          <option name="timeStamp" value="65" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
@@ -421,25 +432,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../../interaktywne_API/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../Branch_ernesta/Asystent/android/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-441">
-          <caret line="21" selection-start-line="21" selection-end-line="21" />
-          <folding>
-            <element signature="e#22#46#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../interaktywne_API/main.py" />
+    <entry file="file://$PROJECT_DIR$/../../../Branch_ernesta/Asystent/android/main.py" />
     <entry file="file:///usr/lib/python3/dist-packages/apport_python_hook.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="172">
@@ -447,17 +441,35 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/venv/real_potholes.json">
+    <entry file="file://$PROJECT_DIR$/venv/src/result.json" />
+    <entry file="file://$PROJECT_DIR$/venv/result.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="15" selection-start-line="2" selection-start-column="15" selection-end-line="2" selection-end-column="15" />
+        <state>
+          <caret column="31" selection-start-column="31" selection-end-column="31" />
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/venv/pip-selfcheck.json">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/venv/real_velocity.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="45">
-          <caret line="3" column="113" lean-forward="true" selection-start-line="3" selection-start-column="113" selection-end-line="3" selection-end-column="113" />
+          <caret line="3" column="113" selection-start-line="3" selection-start-column="113" selection-end-line="3" selection-end-column="113" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/venv/real_potholes.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="147" lean-forward="true" selection-start-line="2" selection-start-column="147" selection-end-line="2" selection-end-column="147" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.PyCharmCE2018.3/system/python_stubs/-1247971763/cv2/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="205">
+          <caret line="3435" column="8" lean-forward="true" selection-start-line="3435" selection-start-column="8" selection-end-line="3435" selection-end-column="8" />
         </state>
       </provider>
     </entry>
@@ -468,22 +480,29 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/venv/src/main.py">
+    <entry file="file://$PROJECT_DIR$/venv/src/Filter.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="83" column="31" selection-start-line="83" selection-start-column="31" selection-end-line="83" selection-end-column="31" />
+        <state relative-caret-position="165">
+          <caret line="90" column="44" selection-start-line="90" selection-start-column="44" selection-end-line="90" selection-end-column="44" />
           <folding>
-            <element signature="e#0#24#0" expanded="true" />
+            <element signature="e#0#31#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/venv/src/Filter.py">
+    <entry file="file:///usr/lib/python3.6/threading.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3375">
-          <caret line="225" column="18" lean-forward="true" selection-start-line="225" selection-start-column="18" selection-end-line="225" selection-end-column="18" />
+        <state relative-caret-position="410">
+          <caret line="771" column="57" selection-start-line="771" selection-start-column="57" selection-end-line="771" selection-end-column="57" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/venv/src/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="339">
+          <caret line="229" column="28" lean-forward="true" selection-start-line="229" selection-start-column="28" selection-end-line="229" selection-end-column="28" />
           <folding>
-            <element signature="e#0#14#0" expanded="true" />
+            <element signature="e#0#24#0" expanded="true" />
           </folding>
         </state>
       </provider>
